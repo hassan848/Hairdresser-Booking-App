@@ -1,0 +1,580 @@
+/* ###################################
+    BELOW 1210px (Smaller Desktop)
+   ###################################
+*/
+
+@media (max-width: 75.6em) {
+  .landing-description {
+    font-size: 1.8rem;
+  }
+
+  .landing {
+    max-width: 120rem;
+  }
+
+  .hairdresser-card {
+    width: 34.533rem;
+    height: 60.869rem;
+  }
+
+  .hairdresser-card-tile {
+    height: initial;
+  }
+
+  .hairdresser-card-conatiner {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .hairdresser-card:nth-child(odd) {
+    justify-self: end;
+  }
+
+  .hairdresser-card:nth-child(even) {
+    justify-self: start;
+  }
+}
+
+/* ###################################
+    BELOW 1140px (Landscape Tablets)
+   ###################################
+*/
+
+@media (max-width: 71.25em) {
+  html {
+    font-size: 56.25%;
+    /* 9px now, instead of 10px */
+  }
+
+  .card-profile-photo {
+    height: 13.4rem;
+  }
+
+  .tile-profile-photo {
+    height: 8rem;
+  }
+
+  .heading-first {
+    font-size: 4.4rem;
+  }
+
+  .second-heading {
+    font-size: 3.6rem;
+  }
+
+  .third-heading {
+    font-size: 2.4rem;
+  }
+
+  .grid {
+    row-gap: 6.4rem;
+    column-gap: 4.8rem;
+  }
+
+  .landing {
+    column-gap: 4.8rem;
+  }
+
+  .header {
+    padding: 0 3.2rem;
+  }
+
+  .servicing-text {
+    font-size: 1.6rem;
+  }
+
+  .button--filter {
+    text-transform: initial;
+  }
+}
+
+/* ###################################
+    BELOW 950px (Tablets)
+   ###################################
+*/
+
+@media (max-width: 59.4em) {
+  html {
+    font-size: 50%;
+    /* 8px / 16px = 0.5 = 50% */
+  }
+
+  .landing {
+    grid-template-columns: 1fr;
+    gap: 4.8rem;
+    gap: 6.4rem;
+    padding: 0 8rem;
+  }
+
+  .landing-img {
+    width: 60%;
+  }
+
+  .landing-text-box,
+  .landing-img-box {
+    text-align: center;
+  }
+
+  .servicing-hairdressers {
+    justify-content: center;
+    margin-top: 3.2rem;
+  }
+
+  .filter-form {
+    width: initial;
+  }
+
+  .filter-layout {
+    flex-direction: column;
+  }
+
+  .filter-sections {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: 3rem;
+    row-gap: 2.4rem;
+  }
+
+  .filter-buttons {
+    margin-left: initial;
+    gap: 1rem;
+  }
+
+  .button--filter {
+    text-transform: uppercase;
+  }
+
+  /* MBOILE NAV */
+  .nav-btn--mobile-el {
+    display: block;
+    /* align-self: flex-end; */
+    z-index: 16;
+  }
+
+  .nav--overall {
+    background-color: rgb(165, 42, 42, 0.97);
+    position: absolute;
+    top: 0;
+    left: 0;
+    /* transform: translateX(100%); */
+    width: 100%;
+    height: 100vh;
+
+    z-index: 15;
+
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 4.8rem;
+
+    /* Have NAV hidden initially for mobile/tablet devices */
+
+    opacity: 0;
+    transition: all 0.5s;
+
+    pointer-events: none;
+    visibility: hidden;
+  }
+
+  .open--nav .nav--overall {
+    opacity: 1;
+    pointer-events: auto;
+    visibility: visible;
+
+    /* transform: translateX(0); */
+  }
+
+  .open--nav .mobile-nav--icon--close {
+    display: block;
+    z-index: 16;
+  }
+
+  .open--nav .mobile-nav--icon {
+    display: none;
+  }
+
+  .header__img-logo {
+    order: -1;
+    height: 7rem;
+    width: 7rem;
+  }
+
+  .nav .nav__element {
+    margin-right: 0;
+  }
+
+  .nav--compulsory {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4.8rem;
+  }
+
+  .nav--users {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4.8rem;
+  }
+
+  .nav--compulsory .nav__element {
+    font-size: 3rem;
+  }
+
+  .nav__element,
+  .nav__element:link,
+  .nav__element:visited {
+    font-size: 3rem;
+  }
+
+  .hairdresser-map-container {
+    height: initial;
+    display: flex;
+    flex-direction: column;
+  }
+
+  #map {
+    flex: none;
+    height: 70rem;
+  }
+
+  .my-services--container {
+    grid-template-columns: repeat(2, 30rem);
+  }
+
+  .my-services--flex-container {
+    justify-content: center;
+  }
+
+  .edit-service--btn-icon {
+    padding: 0.8rem;
+  }
+}
+
+/* ###################################
+    BELOW 696px (Smaller Tablets)
+   ###################################
+*/
+
+@media (max-width: 43.5em) {
+  .hairdresser-card-conatiner {
+    /* display: flex;
+    flex-direction: column;
+    align-items: center; */
+
+    grid-template-columns: 1fr;
+
+    /* grid-template-columns: minmax(276.25px, 1fr) minmax(276.25px, 1fr); */
+    /* grid-auto-rows: 25%; */
+    /* grid-template-columns: repeat(auto-fill, minmax(276.25px, 2fr)); */
+    /* grid-template-columns: 50% 50%;
+    grid-auto-flow: column; */
+    /* grid-auto-columns: minmax(276.25px, 2fr); */
+    /* grid-auto-columns: minmax(276.25px, 2fr); */
+    /* grid-template-rows: unset; */
+    /* overflow-x: auto; */
+  }
+
+  .hairdresser-card {
+    /* width: 36rem;
+    width: 75%; */
+    width: 37.9rem;
+    /* justify-self: center; */
+  }
+
+  .hairdresser-card:nth-child(odd) {
+    justify-self: center;
+  }
+
+  .hairdresser-card:nth-child(even) {
+    justify-self: center;
+  }
+
+  .secondary-heading {
+    margin-bottom: 4.8rem;
+  }
+
+  .tile-top {
+    width: initial;
+  }
+
+  .services-title-search {
+    flex-direction: column;
+    /* align-items: center; */
+    justify-content: center;
+    text-align: center;
+    gap: 3.5rem;
+    margin-bottom: 4.5rem;
+  }
+
+  .services-form--window {
+    width: 55rem;
+  }
+
+  /* View Hairdresser */
+
+  .hairdresser-header-section {
+  }
+
+  .header-landing {
+    display: flex;
+    flex-direction: column;
+    height: 40rem;
+    gap: none;
+  }
+
+  .header-title-photo {
+    /* height: 40rem; */
+    min-height: 40rem;
+  }
+
+  .profile-hairdresser-distance {
+    right: 1rem;
+  }
+
+  .header-profile-description {
+    height: 40rem;
+    overflow: initial;
+  }
+
+  .header-helper-section {
+    margin-top: 9rem;
+    height: 27.5rem;
+  }
+
+  .both-users-map-section {
+    margin-top: 45rem;
+  }
+}
+
+/* ###################################
+    BELOW 536px (Mobile Phones)
+   ###################################
+*/
+@media (max-width: 33.5em) {
+  .hairdresser-card {
+    width: 36rem;
+  }
+
+  .grid {
+    row-gap: 4.8rem;
+  }
+
+  .grid--2-cols {
+    grid-template-columns: 1fr;
+  }
+
+  .landing {
+    padding: 0 3.2rem;
+  }
+
+  .landing-section {
+    padding: 2.4rem 0 6.6rem 0;
+  }
+
+  .btn,
+  .btn:link,
+  .btn:visited {
+    padding: 2.4rem 1.2rem;
+  }
+
+  .landing-img {
+    width: 80%;
+  }
+
+  .servicing-hairdressers {
+    gap: 0;
+  }
+
+  /* FILTER FORM */
+  .filter-layout {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 20;
+
+    background-color: #fff;
+    height: 100vh;
+    width: 100%;
+    overflow: scroll;
+
+    display: none;
+  }
+
+  .filter-sections {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    row-gap: 3.2rem;
+
+    /* display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; */
+  }
+
+  .filter-sections h1 {
+    font-size: 1.8rem;
+  }
+
+  .filter-title {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .filter-btn--mobile-el {
+    display: block;
+    cursor: pointer;
+  }
+
+  .mobile-outline--icon {
+    height: 3rem;
+    width: 3rem;
+  }
+
+  .open--filter .filter-mobile-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 1rem 0;
+  }
+
+  .open--filter .filter-layout {
+    display: flex;
+  }
+
+  .mobile-filter--icon--close {
+    height: 4.8rem;
+    width: 4.8rem;
+  }
+
+  .filter-proximity {
+    text-align: center;
+  }
+
+  .filter-rating {
+    width: 190.4px;
+    text-align: center;
+  }
+
+  .filter-gender {
+    width: 190.4px;
+    text-align: center;
+  }
+
+  .filter-gender-container {
+    /* text-align: center; */
+    display: flex;
+  }
+
+  .distance_unit-metric {
+    margin-left: 7rem;
+  }
+
+  .filter-work_direction h1 {
+    text-align: center;
+  }
+
+  .login-account-container {
+    /* margin: 0 auto;
+    max-width: 55rem;
+    box-shadow: rgb(0 0 0 / 6%) 0px 2.5rem 8rem 2rem;
+    background-color: #fff;
+    border-radius: 4.9px; */
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+    padding-right: 3rem;
+    padding-left: 3rem;
+  }
+
+  .signup-container {
+    padding: 0;
+  }
+
+  .form-0 {
+    left: 3rem;
+  }
+
+  /* form-2 should be left: 2 */
+
+  .signup--form-section {
+    /* width: 41rem; */
+    width: 28rem;
+  }
+
+  .title-form {
+    font-size: 1.4rem;
+  }
+
+  .signup-step {
+    /* width: 14rem; */
+    width: 9.33rem;
+  }
+
+  .step-progress-bar {
+    /* width: 14rem; */
+    width: 9.33rem;
+  }
+
+  .profile-settings--container {
+    flex-direction: column;
+  }
+
+  .profile-settings--sidebar {
+    padding-left: 4rem;
+    padding-right: 4rem;
+  }
+
+  .mobile_input--length {
+    width: initial;
+  }
+
+  .setting--btn {
+    padding: 1.25rem 3rem;
+  }
+
+  .less-padding {
+    padding-left: 7.99rem;
+    padding-right: 7.99rem;
+  }
+
+  .my-services--container {
+    grid-template-columns: repeat(1, 30rem);
+  }
+
+  .hairdresser-services-section {
+    padding: 6.4rem 0;
+  }
+
+  .hairdresser-services-till-container {
+    flex-direction: column;
+  }
+
+  .hairdresser-services-container {
+    grid-template-columns: repeat(1, 30rem);
+    justify-content: center;
+  }
+
+  .appointments {
+    grid-template-columns: repeat(2, 18.001rem);
+    justify-content: center;
+  }
+
+  .appointments--calendar {
+    grid-template-columns: repeat(3, 8rem);
+    justify-content: center;
+  }
+
+  .make-booking {
+    padding: 4rem 4rem;
+  }
+
+  .header-profile-photo {
+    height: 18rem;
+  }
+}
+
+/* - FONT SIZE SYSTEM (px)
+10 / 12 / 14 / 16 / 18 / 20 / 24 / 30 / 36 / 44 / 52 / 62 / 74 / 86 / 98
+
+- SPACING SYSTEM (px)
+2 / 4 / 8 / 12 / 16 / 24 / 32 / 48 / 64 / 80 / 96 / 128 */
