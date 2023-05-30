@@ -1,0 +1,172 @@
+extends home 
+
+block navHeader 
+    include _navHeader
+
+block mainPage
+    main.main 
+        -if(booking.bookingStatus === 'Completed' && booking.review.length > 0)
+            section.booking-detail--review-section
+                .container.review--container
+                    .div-review--container
+                        img.review-profile-photo(src=`/Frontend/img/customers/${booking.client.profileImg}` alt='Photo of client')
+                        .review--second-part
+                            .review-name-part
+                                p.review-name #{booking.client.name}
+                            p.review-description= `"${booking.review[0].review}"`
+                            .profile-rating.review-star-rating
+                                .profile-stars
+                                    .star-rating-num #{booking.review[0].starRating}
+                                    .profile-star-rating(style=`--star-rating: ${booking.review[0].starRating}`)
+                            .review-id-info
+                                div
+                                    .star-rating-num.sm-label Client No
+                                    span.num-of-ratings.clientId-num-of-ratings #{booking.clientId._id}
+                                div
+                                    .star-rating-num.sm-label Booking No
+                                    span.num-of-ratings.clientId-num-of-ratings #{booking._id}
+
+        section(class=`${booking.bookingStatus === 'Completed' ? 'booking-details-section review--booking-details-section' : 'pass-reset-token--section'}` data-clientimg=`${booking.bookingStatus === 'Completed' ? booking.clientId.profileImg : ''}`)
+            .container
+                .div-secondary-container
+                    .view-booking--header.view-client--booking-detail
+                        h2.secondary-heading.confirmation-heading.booking-detail--heading
+                            | Booking ID - ##{booking.id}
+                    .mid-div
+                        .detail-part(data-client=booking.client.name)
+                            p.step-work-description.booking-req--description An email of this booking verification had previously been sent to your email at:
+                                br
+                                span.span-email=`< ${booking.client.email} >`
+                            p.token-reset--description2.booking-detail(data-bookingId=booking.id)
+                                strong Booking Id
+                                |  - #{booking.id}
+                            .booking-info--split
+                                p.token-reset--description2.booking-detail
+                                    strong Appointment address:
+                                    br
+                                    | #{address}
+                                p.token-reset--description2.booking-detail
+                                    strong Appointment date:
+                                    |  #{booking.startDateTime.toLocaleString("en-GB").split(',')[0]}
+                                    br
+                                    | Time: #{booking.startDateTime.toLocaleString("en-GB").substring(12, 17)} - #{booking.endDateTime.toLocaleString("en-GB").substring(12, 17)}
+                            p.token-reset--description2.booking-detail-title
+                                strong Featured Services:
+                            each service in booking.services
+                                .booked-service-amount
+                                    p.token-reset--description2.booking-detail #{service.serviceName}
+                                    p.token-reset--description2.booking-detail £#{service.servicePrice}
+                            -if(booking.routeTo == 'client')
+                                p.token-reset--description2
+                                    strong Home Appointment:
+                                .booked-service-amount
+                                    p.token-reset--description2.booking-detail Cost:
+                                    p.token-reset--description2.booking-detail £#{booking.homeAppointCost.toFixed(2)}
+
+                            .booked-service-amount
+                                p.token-reset--description2.booking-detail
+                                    strong Total cost
+                                p.token-reset--description2.booking-detail
+                                    strong &pound;#{booking.totalPrice}    
+                
+                            .booking-detail--status-div
+                                p.booking-deetail--status
+                                    strong Booking Status: 
+                                -if(booking.bookingStatus === 'Placed')
+                                    p(class=`booking-deetail--status booking-status-color-${booking.bookingStatus}`) #{booking.bookingStatus} / Requested
+                                -if(!(booking.bookingStatus === 'Placed'))
+                                    p(class=`booking-deetail--status booking-status-color-${booking.bookingStatus}`) #{booking.bookingStatus}
+
+                            .reset-confirmation--btns
+                                a.btn.btn--cta.margin-right-sm.go-back--btn(href='/my-booking-history') View your bookings
+                                -if(booking.bookingStatus === 'Placed')
+                                    button.btn.cancel-booking--btn Cancel this Request
+                                -if(booking.bookingStatus === 'Completed' && booking.review.length == 0)
+                                    button.btn.leave-review--btn= 'Leave a Review'
+                                        ion-icon.add-review--icon(name='add-circle-outline')
+                        .hairdresser-card.booked-hairdresser-card
+                            .hairdresser-card-header(data-hairdresserId=booking.hairdresserId.id)
+                                .card-profile
+                                .card-profile--partition
+                                img.card-profile-photo(src=`/Frontend/img/customers/${booking.hairdresserId.profileImg}` alt='Profile image of hairdresser')
+                                h3.card-name-heading
+                                    span #{booking.hairdresserId.fullName}
+                                .profile-rating
+                                    .profile-stars
+                                        .star-rating-num #{booking.hairdresserId.starRating}
+                                        .profile-star-rating(style=`--star-rating: ${booking.hairdresserId.starRating}`)
+                                    span.num-of-ratings rating (#{booking.hairdresserId.numOfReviews})
+                                .distance-to-hairdresser
+                                    span.material-icons.place-icon  place 
+                                    .distance
+                                        h3 #{booking.distance} miles
+                                        span.distance-msg away from you
+                            .hairdresser-card-description
+                                h4.hairdresser-description-heading
+                                    | Self description
+                                p.hairdresser-description-text
+                                    | #{booking.hairdresserId.description}
+                            .hairdresser-card-services
+                                .horizontal-line
+                                    h4.hairdresser-services-heading Services
+                                .hairdresser-services
+                                    for service in booking.hairdresserId.servicesTitles 
+                                        .service-chip #{service}
+                
+                            .hairdresser_card-bottom
+                                .card-details
+                                    span.material-icons  #{directionIcon} 
+                                    span #{booking.hairdresserId.genderMarket.charAt(0).toUpperCase() + booking.hairdresserId.genderMarket.slice(1)}
+                                .card-details.direction
+                                    span.material-icons=  `${booking.hairdresserId.workFlowDirection == "bidirectional" ? "compare_arrows" : "arrow_right_alt"}` 
+                                    span= `${booking.hairdresserId.workFlowDirection == "bidirectional" ? "Both ways" : "One way"}`
+                                a.button.button--sml.button--blue(href='#') More Details
+
+    -if(booking.bookingStatus === 'Completed')
+        .services-form--window.hide
+            button.close-services-form &times;
+            h2.services-window--title Add Your Review
+            form.services-form--edit-add
+                .form-section
+                    label.title-form.service--title-form(for='review-description') Review Description
+                    textarea#review-description.service-description--input-form(name='review-description' minlength='80' maxlength='300' cols='30' rows='10' placeholder='Enter your review description here...' required='required')
+                .form-section.form-service--space
+                    label.title-form.service--title-form(for='review-rating-options') Star Rating
+                    .review-stars-container
+                        select#review-rating-options.review-rating-options(name='review-rating-options' required='')
+                            option(value='') Select Rating
+                            option(value='1')
+                                | &starf;
+                                | 1 Star rating
+                            option(value='1.5')
+                                | &starf;
+                                | 1.5 Star rating
+                            option(value='2')
+                                | &starf;
+                                | 2 Stars rating
+                            option(value='2.5')
+                                | &starf;
+                                | 2.5 Stars rating
+                            option(value='3')
+                                | &starf;
+                                | 3 Stars rating
+                            option(value='3.5')
+                                | &starf;
+                                | 3.5 Stars rating
+                            option(value='4')
+                                | &starf;
+                                | 4 Stars rating
+                            option(value='4.5')
+                                | &starf;
+                                | 4.5 Stars rating
+                            option(value='5')
+                                | &starf;
+                                | 5 Stars rating
+                        // <div class="filter-star-text review-star-text"><span class="filter-stars review-stars">★★★</span>Star Rating</div>
+                        .profile-star-rating.review-stars(style='--star-rating: 0')
+                            span.review-star-text Star Rating
+                        // <input type="text" id="service-name" class="input-form service--input-form" value="Shape Up" required="">
+                .form-section--btns
+                    a.service-form--btn.btn-cancel Cancel
+                    button.service-form--btn.btn-submit Submit
+        .shaded-background.hide

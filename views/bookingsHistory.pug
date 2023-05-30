@@ -1,0 +1,248 @@
+extends home 
+
+block navHeader 
+    include _navHeader
+
+block mainPage
+    main
+        section.hairdressers-section.booking-history-section
+            h2.secondary-heading.confirmation-heading.container Your Upcoming Appointments
+                span.all-bookings--heading  (Accepted by hairdresser)
+
+            -if(acceptedBookings.length < 1)
+                .hairdresser-bookings--0results.container
+                    h2 0 upcoming appointments, you don't have any confirmed bookings as of now!
+
+            -if(acceptedBookings.length > 0)
+                .hairdresser-card-conatiner.container.recent-booking--container
+                    each booking in acceptedBookings
+                        .hairdresser-card.booked-hairdresser-card
+                            .hairdresser-card-header
+                                .card-profile
+                                div(class=`card-profile--partition card-profile--partition-${booking.bookingStatus}`)
+                                img.card-profile-photo(src=`/Frontend/img/customers/${booking.hairdresserId.profileImg}` alt='Profile Image of hairdresser')
+                                h3.card-name-heading
+                                    span(class=`hairdresser-name--heading-${booking.bookingStatus}`)= booking.hairdresser.name
+                                .profile-rating
+                                    .profile-stars
+                                        .star-rating-num= `${booking.hairdresserId.starRating}`
+                                        .profile-star-rating(style=`--star-rating: ${booking.hairdresserId.starRating}`)
+                                    span.num-of-ratings= `rating (${booking.hairdresserId.numOfReviews})`
+                                .distance-to-hairdresser
+                                    span.material-icons.place-icon  place 
+                                    .distance
+                                        h3= `${booking.distance} miles`
+                                        span.distance-msg away from you
+                            .hairdresser-card-description
+                                h4.hairdresser-description-heading Booking Details
+                                p.hairdresser-description-text
+                                    span.card-detail-desc Address
+                                    | : #{booking.address}
+                                p.hairdresser-description-text
+                                    span.card-detail-desc Date
+                                    | : #{booking.startDateTime.toLocaleString("en-GB").split(',')[0]},
+                                    span.card-detail-desc  Time:
+                                    |  #{booking.startDateTime.toLocaleString("en-GB").substring(12, 17)} - #{booking.endDateTime.toLocaleString("en-GB").substring(12, 17)}
+                                -if(booking.routeTo === 'hairdresser')
+                                    p.hairdresser-description-text
+                                        span.card-detail-desc Travel
+                                        | : Client travels to hairdresser
+                                -if(booking.routeTo === 'client')
+                                    p.hairdresser-description-text
+                                        span.card-detail-desc Travel
+                                        | : Hairdresser travels to client
+                            .hairdresser-card-services.booking-card-services
+                                .horizontal-line
+                                    h4.hairdresser-services-heading.booked-services-heading Booked Services
+                                .hairdresser-services.hairdresser-services--price-items
+                                    each service in booking.services
+                                        .service-item--container
+                                            .service-chip.booked-service-chip= `${service.serviceName}`
+                                            span.material-icons.back-to-back compare_arrows
+                                            p.booked-service-price &pound;#{service.servicePrice}
+                                    //- .service-item--container
+                                    //-     .service-chip.booked-service-chip service
+                                    //-     span.material-icons.back-to-back compare_arrows
+                                    //-     p.booked-service-price &pound;8.99
+                                    //- .service-item--container
+                                    //-     .service-chip.booked-service-chip Face mask
+                                    //-     span.material-icons.back-to-back compare_arrows
+                                    //-     p.booked-service-price &pound;12.99
+                                    //- .service-item--container
+                                    //-     .service-chip.booked-service-chip Skin Fadeddf
+                                    //-     span.material-icons.back-to-back compare_arrows
+                                    //-     p.booked-service-price &pound;8.99
+                                    .service-item--container.total-cost--container
+                                        p.booked-service-price Total Cost:
+                                        p.booked-service-price &pound;#{booking.totalPrice}
+                            .hairdresser_card-bottom
+                                .card-details
+                                    span.material-icons  history 
+                                    span.booked--time-ago= `${booking.timeAgo}`
+                                .card-details.direction.booked-details
+                                    // <span class="material-icons"> compare_arrows </span>
+                                    div(class=`${booking.bookingStatus}-status`)
+                                    span.booking-status #{booking.bookingStatus}
+                                a.button.button--sml.button--blue(href=`/myBooking/${booking._id}`) Details
+            
+        section.hairdressers-section.accepted-booking-section
+            h2.secondary-heading.confirmation-heading.container Appointments you requested
+                span.all-bookings--heading  (Cancelled if not accepted before start-time)
+
+            -if(placedBookings.length < 1)
+                .hairdresser-bookings--0results.container
+                    h2 0 placed/requested bookings, You havent requested any appointment/bookings as of recent!
+
+            .hairdresser-card-conatiner.container
+                 each booking in placedBookings
+                    -if(booking.bookingStatus === 'Placed')
+                        .hairdresser-card.booked-hairdresser-card.accepted-booking
+                            .hairdresser-card-header
+                                .card-profile
+                                div(class=`card-profile--partition card-profile--partition-${booking.bookingStatus}`)
+                                img.card-profile-photo(src=`/Frontend/img/customers/${booking.hairdresserId.profileImg}` alt='Profile Image of hairdresser')
+                                h3.card-name-heading
+                                    span(class=`hairdresser-name--heading-${booking.bookingStatus}`)= booking.hairdresser.name
+                                .profile-rating
+                                    .profile-stars
+                                        .star-rating-num= `${booking.hairdresserId.starRating}`
+                                        .profile-star-rating(style=`--star-rating: ${booking.hairdresserId.starRating}`)
+                                    span.num-of-ratings= `rating (${booking.hairdresserId.numOfReviews})`
+                                .distance-to-hairdresser
+                                    span.material-icons.place-icon  place 
+                                    .distance
+                                        h3= `${booking.distance} miles`
+                                        span.distance-msg away from you
+                            .hairdresser-card-description
+                                h4.hairdresser-description-heading Booking Details
+                                p.hairdresser-description-text
+                                    span.card-detail-desc Address
+                                    | : #{booking.address}
+                                p.hairdresser-description-text
+                                    span.card-detail-desc Date
+                                    | : #{booking.startDateTime.toLocaleString("en-GB").split(',')[0]},
+                                    span.card-detail-desc  Time:
+                                    |  #{booking.startDateTime.toLocaleString("en-GB").substring(12, 17)} - #{booking.endDateTime.toLocaleString("en-GB").substring(12, 17)}
+                                -if(booking.routeTo === 'hairdresser')
+                                    p.hairdresser-description-text
+                                        span.card-detail-desc Travel
+                                        | : Client travels to hairdresser
+                                -if(booking.routeTo === 'client')
+                                    p.hairdresser-description-text
+                                        span.card-detail-desc Travel
+                                        | : Hairdresser travels to client
+                            .hairdresser-card-services.booking-card-services
+                                .horizontal-line
+                                    h4.hairdresser-services-heading.booked-services-heading Booked Services
+                                .hairdresser-services.hairdresser-services--price-items
+                                    each service in booking.services
+                                        .service-item--container
+                                            .service-chip.booked-service-chip= `${service.serviceName}`
+                                            span.material-icons.back-to-back compare_arrows
+                                            p.booked-service-price &pound;#{service.servicePrice}
+                                    //- .service-item--container
+                                    //-     .service-chip.booked-service-chip service
+                                    //-     span.material-icons.back-to-back compare_arrows
+                                    //-     p.booked-service-price &pound;8.99
+                                    //- .service-item--container
+                                    //-     .service-chip.booked-service-chip Face mask
+                                    //-     span.material-icons.back-to-back compare_arrows
+                                    //-     p.booked-service-price &pound;12.99
+                                    //- .service-item--container
+                                    //-     .service-chip.booked-service-chip Skin Fadeddf
+                                    //-     span.material-icons.back-to-back compare_arrows
+                                    //-     p.booked-service-price &pound;8.99
+                                    .service-item--container.total-cost--container
+                                        p.booked-service-price Total Cost:
+                                        p.booked-service-price &pound;#{booking.totalPrice}
+                            .hairdresser_card-bottom
+                                .card-details
+                                    span.material-icons  history 
+                                    span.booked--time-ago= `${booking.timeAgo}`
+                                .card-details.direction.booked-details
+                                    // <span class="material-icons"> compare_arrows </span>
+                                    div(class=`${booking.bookingStatus}-status`)
+                                    span.booking-status #{booking.bookingStatus}
+                                a.button.button--sml.button--blue(href=`/myBooking/${booking._id}`) Details
+        
+        section.hairdressers-section.accepted-booking-section
+            h2.secondary-heading.confirmation-heading.container Remaining Bookings History
+                span.all-bookings--heading  (Completed or Cancelled)
+
+            //- -if(acceptedBookings.length < 1)
+            //-     .hairdresser-bookings--0results.container
+            //-         h2 0 accepted requests, You havent accepted any appointment/bookings as of recent!
+
+            .hairdresser-card-conatiner.container
+                 each booking in remainingBookings.reverse()
+                    -if(booking.bookingStatus === 'Completed' || booking.bookingStatus === 'Cancelled')
+                        .hairdresser-card.booked-hairdresser-card.accepted-booking
+                            .hairdresser-card-header
+                                .card-profile
+                                div(class=`card-profile--partition card-profile--partition-${booking.bookingStatus}`)
+                                img.card-profile-photo(src=`/Frontend/img/customers/${booking.hairdresserId.profileImg}` alt='Profile Image of hairdresser')
+                                h3.card-name-heading
+                                    span(class=`hairdresser-name--heading-${booking.bookingStatus}`)= booking.hairdresser.name
+                                .profile-rating
+                                    .profile-stars
+                                        .star-rating-num= `${booking.hairdresserId.starRating}`
+                                        .profile-star-rating(style=`--star-rating: ${booking.hairdresserId.starRating}`)
+                                    span.num-of-ratings= `rating (${booking.hairdresserId.numOfReviews})`
+                                .distance-to-hairdresser
+                                    span.material-icons.place-icon  place 
+                                    .distance
+                                        h3= `${booking.distance} miles`
+                                        span.distance-msg away from you
+                            .hairdresser-card-description
+                                h4.hairdresser-description-heading Booking Details
+                                p.hairdresser-description-text
+                                    span.card-detail-desc Address
+                                    | : #{booking.address}
+                                p.hairdresser-description-text
+                                    span.card-detail-desc Date
+                                    | : #{booking.startDateTime.toLocaleString("en-GB").split(',')[0]},
+                                    span.card-detail-desc  Time:
+                                    |  #{booking.startDateTime.toLocaleString("en-GB").substring(12, 17)} - #{booking.endDateTime.toLocaleString("en-GB").substring(12, 17)}
+                                -if(booking.routeTo === 'hairdresser')
+                                    p.hairdresser-description-text
+                                        span.card-detail-desc Travel
+                                        | : Client travels to hairdresser
+                                -if(booking.routeTo === 'client')
+                                    p.hairdresser-description-text
+                                        span.card-detail-desc Travel
+                                        | : Hairdresser travels to client
+                            .hairdresser-card-services.booking-card-services
+                                .horizontal-line
+                                    h4.hairdresser-services-heading.booked-services-heading Booked Services
+                                .hairdresser-services.hairdresser-services--price-items
+                                    each service in booking.services
+                                        .service-item--container
+                                            .service-chip.booked-service-chip= `${service.serviceName}`
+                                            span.material-icons.back-to-back compare_arrows
+                                            p.booked-service-price &pound;#{service.servicePrice}
+                                    //- .service-item--container
+                                    //-     .service-chip.booked-service-chip service
+                                    //-     span.material-icons.back-to-back compare_arrows
+                                    //-     p.booked-service-price &pound;8.99
+                                    //- .service-item--container
+                                    //-     .service-chip.booked-service-chip Face mask
+                                    //-     span.material-icons.back-to-back compare_arrows
+                                    //-     p.booked-service-price &pound;12.99
+                                    //- .service-item--container
+                                    //-     .service-chip.booked-service-chip Skin Fadeddf
+                                    //-     span.material-icons.back-to-back compare_arrows
+                                    //-     p.booked-service-price &pound;8.99
+                                    .service-item--container.total-cost--container
+                                        p.booked-service-price Total Cost:
+                                        p.booked-service-price &pound;#{booking.totalPrice}
+                            .hairdresser_card-bottom
+                                .card-details
+                                    span.material-icons  history 
+                                    span.booked--time-ago= `${booking.timeAgo}`
+                                .card-details.direction.booked-details
+                                    // <span class="material-icons"> compare_arrows </span>
+                                    div(class=`${booking.bookingStatus}-status`)
+                                    span.booking-status #{booking.bookingStatus}
+                                a.button.button--sml.button--blue(href=`/myBooking/${booking._id}`) Details
+    //- h2.secondary-heading.confirmation-heading.container Your Bookings History
+    //-             span.all-bookings--heading  (all previous bookings)

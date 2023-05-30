@@ -1,0 +1,50 @@
+extends home 
+
+block navHeader 
+    include _navHeader
+
+block mainPage
+    main 
+        section.pass-reset-token--section
+            .container
+                h2.secondary-heading.confirmation-heading
+                    | A Booking request has been sent to #{booking.hairdresser.name.split(' ')[0]} (the hairdresser)
+                p.step-work-description.booking-req--description
+                    | An email of the booking request verification has also been sent to your email:
+                    br
+                    span.span-email=` < ${booking.client.email} >`
+                    br
+                p.token-reset--description2.booking-detail
+                    strong Booking Id
+                    |  - #{booking._id}
+                .booking-info--split
+                    p.token-reset--description2.booking-detail
+                        strong Appointment address:
+                        br
+                        | #{address}
+                    p.token-reset--description2.booking-detail
+                        strong Appointment date:
+                        |  #{booking.startDateTime.toLocaleString("en-GB").split(',')[0]}
+                        br
+                        | Time: #{booking.startDateTime.toLocaleString("en-GB").substring(12, 17)} - #{booking.endDateTime.toLocaleString("en-GB").substring(12, 17)}
+                p.token-reset--description2.booking-detail-title
+                    strong Featured Services:
+                each service in booking.services
+                    .booked-service-amount
+                        p.token-reset--description2.booking-detail #{service.serviceName}
+                        p.token-reset--description2.booking-detail £#{service.servicePrice}
+                -if(booking.routeTo == 'client')
+                    p.token-reset--description2
+                        strong Home Appointment:
+                    .booked-service-amount
+                        p.token-reset--description2.booking-detail Cost:
+                        p.token-reset--description2.booking-detail £#{booking.homeAppointCost.toFixed(2)}
+
+                .booked-service-amount
+                    p.token-reset--description2.booking-detail
+                        strong Total cost
+                    p.token-reset--description2.booking-detail
+                        strong &pound;#{booking.totalPrice}
+                .reset-confirmation--btns
+                    a.btn.btn--cta.margin-right-sm.go-back--btn(href='/my-booking-history') View your bookings
+                    a.btn.btn--learn-more.resend-token--email(href=`/myBooking/${booking._id}`) View this booking

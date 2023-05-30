@@ -1,0 +1,94 @@
+extends home 
+
+block navHeader 
+    include _navHeader
+
+
+block mainPage 
+    main.main-profile
+        .profile-settings--container
+            nav.profile-settings--sidebar
+                ul.sidebar-nav
+                    li.sidebar-nav--current
+                        a.sidebar-item(href='/profilePage')
+                            ion-icon.sidebar-icon(name='settings-outline')
+                            | MY SETTINGS
+                    li
+                        a.sidebar-item(href='/addressSettings')
+                            ion-icon.sidebar-icon(name='home-outline')
+                            | Address Settings
+                    li
+                        a.sidebar-item(href='#')
+                            ion-icon.sidebar-icon(name='star-outline')
+                            | MY Reviews
+                    -if(user.user_role === 'client')
+                        li
+                            a.sidebar-item(href='/my-booking-history')
+                                ion-icon.sidebar-icon(name='archive-outline')
+                                //- span.sidebar-item.material-symbols-outlined event_upcoming 
+                                | MY Bookings History
+                    -if(user.user_role === 'hairdresser')
+                        li
+                            a.sidebar-item(href='/my-appointments')
+                                //- ion-icon.sidebar-icon(name='archive-outline')
+                                span.sidebar-item.material-symbols-outlined event_upcoming 
+                                | MY Appointments
+
+                -if(user.user_role === 'hairdresser')
+                    .hairdresser-navigation-item
+                        h5.hairdresser-sidebar-title Hairdresser  Settings
+                        ul.sidebar-nav
+                            li
+                                a.sidebar-item(href='/workSchedule')
+                                    ion-icon.sidebar-icon(name='calendar-outline')
+                                    | MY Work Schedule
+                            li
+                                a.sidebar-item(href='/myServices')
+                                    span.sidebar-item.material-symbols-outlined cut
+                                    | MY SERVICES
+                            li
+                                a.sidebar-item(href='#')
+                                    span.sidebar-item.material-symbols-outlined wc
+                                    | Gender Market
+                
+            .profile-settings--main-section
+                .profile-section--main-container
+                    h2.profile-settings--heading My Profile Settings
+                    form.nameEmailForm
+                        .profile--form-section.split--form-section
+                            div
+                                label.profile--title-form(for='first-name') First Name:
+                                input#first-name.input-form(type='text' value=user.name required='')
+                            div
+                                label.profile--title-form(for='surname') Surname:
+                                input#surname.input-form(type='text' value=user.surname required='')
+                        .profile--form-section.mb-big
+                            label.profile--title-form(for='user-email') Email:
+                            input#user-email.input-form(type='email' value=user.email required='')
+                        .profile--form-section.add-profile-image
+                            -if(user.user_role === 'client')
+                                img.profile--img-pic(src=`/Frontend/img/customers/${user.client.profileImg}` alt='Profile Img')
+                            -if(user.user_role === 'hairdresser')
+                                img.profile--img-pic(src=`/Frontend/img/customers/${user.hairdresser.profileImg}` alt='Profile Img')
+                            //- a.forgot-pass-form(href='#') Upload new picture
+                            input.profile-img-file(type='file', id='profileImage', name='profileImage', accept='image/*')
+                            label.new-profile-img(for='profileImage') Upload new picture
+                        .align-save-changes
+                            button.btn.button--blue.btn--update-profile.setting--btn
+                                | Save Changes
+                .profile--line-seperation
+                .profile-section--main-container
+                    h2.profile-settings--heading Change Password
+                    form.update-pass--form
+                        .profile--form-section
+                            label.profile--title-form(for='cur-password') Existing Password:
+                            input#cur-password.input-form(type='password' placeholder='•••••••••' pattern="(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,}", title="Password must contain at-least 8 characters, one number, one uppercase letter and a lowercase letter" required='' minlength='8')
+                        .profile--form-section
+                            label.profile--title-form(for='new-password') New Password:
+                            input#new-password.input-form(type='password' placeholder='•••••••••' pattern="(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,}", title="Password must contain at-least 8 characters, one number, one uppercase letter and a lowercase letter" required='' minlength='8')
+                        .profile--form-section.mb-bigger
+                            label.profile--title-form(for='confirm-password') Confirm New Password:
+                            input#confirm-password.input-form(type='password' placeholder='•••••••••' pattern="(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,}", title="Password must contain at-least 8 characters, one number, one uppercase letter and a lowercase letter" required='' minlength='8')
+                        .align-save-changes
+                            button.btn.button--blue.btn--update-profile.save-new-pass.setting--btn
+                                | Save New Password

@@ -1,0 +1,44 @@
+extends homeEmail
+
+block content
+    - if(recepientFor === 'client')
+        p Dear #{firstName},
+    - if(recepientFor === 'hairdresser')
+        p Hi #{firstName},
+
+    - if(recepientFor === 'client')
+        p Unfortunately Your appointment request has been <strong>declined/cancelled</strong> by #{bookingInfo.hairdresser.name.split(' ')[0]} (the hairdresser), as he/she is unavailable, <br>Please review the booking details below and try selecting another date or time if you wish.
+    - if(recepientFor === 'hairdresser')
+        p Just to let you know, a client (#{bookingInfo.client.name}) recently requested an appointment has now <strong>withdrawn/cancelled</strong> his/her request, <br>The details of the cancelled booking request can be seen below:
+    p <strong>Booking Id - </strong>#{bookingInfo._id}
+    p <strong>Appointment address:</strong> <br>#{address}
+    p <strong>Appointment Date:</strong> #{bookingInfo.startDateTime.toLocaleString("en-GB").split(',')[0]} <br>Time: #{bookingInfo.startDateTime.toLocaleString("en-GB").substring(12, 17)} - #{bookingInfo.endDateTime.toLocaleString("en-GB").substring(12, 17)}
+    span.selected-services <strong>Featured Services:</strong>
+    .amount-elements
+        each service in bookingInfo.services
+            .service-name-amount
+                span.service-el-name #{service.serviceName}
+                span £#{service.servicePrice}
+    
+    -if(bookingInfo.routeTo == 'client')
+        span.selected-services <strong>Home Appointment:</strong>
+            .service-name-amount.home-appoint-reciept
+                span.service-el-name Cost:
+                span £#{bookingInfo.homeAppointCost.toFixed(2)}
+
+    .total-price--container 
+        span 
+            strong Total cost: 
+        span
+            strong £#{bookingInfo.totalPrice}
+    table.btn.btn-primary(role='presentation', border='0', cellpadding='0', cellspacing='0')
+        tbody
+            tr
+                td(align='left')
+                    table(role='presentation', border='0', cellpadding='0', cellspacing='0')
+                        tbody
+                            tr
+                                td
+                                    a(href=`${url}`, target='_blank') View Booking Details
+    p If you have any issues, feel free to get in touch!
+    p - Hassan Aslam, CEO

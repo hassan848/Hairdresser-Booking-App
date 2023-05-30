@@ -1,0 +1,17 @@
+extends home
+
+block navHeader 
+    include _navHeader
+
+block mainPage
+    main 
+        .login-container
+            .login-account-container 
+                h2.login-secondary-heading.input_Email_Address Reset your password 
+                form.enter_email_form
+                    p.step-work-description.token-reset--description.token-reset--description3 Once you provide your email, a reset password token link will be sent to that address
+                    .form-section.form-section--space
+                        label.title-form(for="email") Enter your Email address: 
+                        input.input-form(type="email", id="email", placeholder="Please enter your email", required)
+                    .form-section.form-btns
+                        button.button.button--md.button--blue Continue

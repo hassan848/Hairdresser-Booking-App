@@ -1,0 +1,168 @@
+extends home 
+
+block navHeader 
+    include _navHeader
+
+block mainPage 
+    main 
+        section.hairdresser-header-section(data-location=`${JSON.stringify(hairdresser.location.coordinates)}`) 
+            .header-landing(data-id=hairdresser._id)
+                .header-title-photo 
+                    .card-profile--partition.header-profile--partition 
+                    img.card-profile-photo.header-profile-photo(src=`/Frontend/img/customers/${hairdresser.profileImg}`, alt="face image of hairdresser" data-hairdresserpic=hairdresser.profileImg)
+                    .profile-rating.header-profile-rating(data-profilepic=user.client.profileImg)
+                        .profile-stars.header-profile-stars 
+                            .star-rating-num.header-rating-num=hairdresser.starRating
+                            .profile-star-rating.header-star-rating(style=`--star-rating: ${hairdresser.starRating}`)
+                        span.num-of-ratings.header-num-of-ratings= `rating(${hairdresser.numOfReviews})`
+                    .distance-to-hairdresser.profile-hairdresser-distance
+                        span.material-icons.place-icon.profile-place-icon place 
+                        .distance.profile-header-distance
+                            h3.distance-from-hairdresser(data-distance=`${Math.round((prevQuery.distance + Number.EPSILON) * 100) / 100}`)=`${Math.round((prevQuery.distance + Number.EPSILON) * 100) / 100} miles` 
+                            span.distance-msg.profile-distance-msg away from you 
+
+                .header-profile-description
+                    h3.card-name-heading.header-name-title(data-fullname=`${hairdresser.fullName}`)
+                        span=hairdresser.fullName 
+                    .description-about-me
+                        h4.description-aboutme-header Description/About me
+                        p.aboutme-description= hairdresser.description
+                .header-profile-details
+                    .third-part--header
+                        h2.gradient-heading.more-details-heading More Details
+                        -if(!(user.client.bookmarkedHairdressers.includes(hairdresser._id)))
+                            button.bookmark-btn--circle
+                                ion-icon.bookmark-icon.bookmark-hairdresser(name="bookmark-outline")
+                        -if(user.client.bookmarkedHairdressers.includes(hairdresser._id))
+                            button.bookmark-btn--circle
+                                ion-icon.bookmark-icon.bookmarked(name="bookmark")
+
+                    .grid.grid--2-cols.hairdresser-more-details
+                        .detail-info 
+                            - if(hairdresser.genderMarket === 'unisex')
+                                span.material-icons.info-icon wc 
+                            - if(hairdresser.genderMarket === 'male')
+                                span.material-icons.info-icon man 
+                            - if(hairdresser.genderMarket === 'female')
+                                span.material-icons.info-icon woman 
+                            span.info-title Service Gender 
+                            - if(hairdresser.genderMarket === 'unisex')
+                                p.info-text #[span.info-text--span Unisex] - this hairdresser can provide services for both males and females
+                            - if(hairdresser.genderMarket === 'male')
+                                p.info-text #[span.info-text--span Males] - this hairdresser can provide services to males only
+                            - if(hairdresser.genderMarket === 'female')
+                                p.info-text #[span.info-text--span Females] - this hairdresser can provide services to females only
+                        .detail-info 
+                            - if(hairdresser.workFlowDirection === 'bidirectional')
+                                - if(prevQuery.distance <= hairdresser.proximity)
+                                    span.material-icons.info-icon compare_arrows
+                                    p.info-title Work Flow
+                                    p.info-text #[span.info-text--span Both ways] - this hairdresser can travel to you, or you can travel to him/her #[span.work-flow-msg (according to your location)]
+                            - if(hairdresser.workFlowDirection === 'bidirectional')
+                                - if(prevQuery.distance > hairdresser.proximity)
+                                    span.material-icons.info-icon arrow_right_alt
+                                    p.info-title Work Flow
+                                    p.info-text #[span.info-text--span One way] - this hairdresser cannot travel to you, you must travel to him/her #[span.work-flow-msg (according to your location)]
+                            - if(hairdresser.workFlowDirection === 'unidirectional')
+                                span.material-icons.info-icon arrow_right_alt
+                                p.info-title Work Flow
+                                p.info-text #[span.info-text--span One way] - this hairdresser cannot travel to you, you must travel to him/her.
+                        
+                    .more-sub-info 
+                        p #[span.hairdresser--name=`${hairdresser.fullName}`]
+                        p.addr(data-address=hairdresser.location.address) #[span Address:]
+                            = ` ${hairdresser.location.address}`
+                        p.hairdresser--email(data-email=`${hairdresser.user.email}`) #[span Email: ] 
+                            = `${hairdresser.user.email}`
+                        p #[span Distance from you: ] #{Math.round((prevQuery.distance + Number.EPSILON) * 100) / 100} miles 
+                        p.hairdresser-prox(data-proximity=hairdresser.proximity) #[span Required proximity for hairdresser to travel to you: ] 
+                            = `Within ${hairdresser.proximity} miles`
+
+        section.header-helper-section 
+            .helper-landing
+                .helper-first 
+                .helper-second 
+                .helper-third 
+        
+        section.both-users-map-section
+            #mapbox-map
+        
+        section.hairdresser-services-section
+
+            .services-title-search.container
+                h1 Select Services
+                .search-services 
+                    input.search-services-input(type="text", placeholder="Search service...")
+                    button.search-services-btn 
+                        span.material-icons.search-icon-services search
+
+            .hairdresser-services-till-container.container 
+                .hairdresser-services-container
+                    each service in hairdresser.services
+                        .service-card(data-serviceid=service._id)
+                            h3.service-title=service.title 
+                            p.service-price=`£${service.price}` 
+                            p.service-description=service.description 
+                            button.service-btn.add-service-btn Add to Service
+
+                    .bar-notify 
+                        span.material-icons task_alt 
+                        |Service Added
+                        ion-icon.close-bar(name="close-outline")
+                    .bar-notify-close  
+                        span.material-icons task_alt 
+                        |Service Removed!
+                        ion-icon.close-bar(name="close-outline")
+                .services-till
+                    .till-content
+                        h2 Services Amount
+                        .amount-elements
+                            //- .service-name-amount
+                            //-     span.service-el-name Face Mask
+                            //-     span £8.99
+
+                    .horiz-line
+                    .services-total-cl
+                        h2.total-title Services Total 
+                        span £0.00
+                    .proceed-btn-container
+                        button.proceed-button Continue
+        
+        section.select-date-section(data-usercoords=JSON.stringify(user.client.location.coordinates))
+            .calendar-container.container 
+                .calendar(data-schedule=`${JSON.stringify(hairdresser.workSchedule)}`) 
+                    h2.calendar-title Select Time Slot 
+                    p.calendar-subtitle Current Week
+                    .seven-days
+
+                    .day-info(data-cost=hairdresser.homeAppointCost)
+
+                    .appointments
+
+            -if(user && user.user_role === 'client')
+                //- section.booking-section(data-clientname=`${user.name} ${user.surname}`)
+                .make-booking(data-clientid=user.client.id)
+                    .total-booking--price(data-clientname=`${user.name} ${user.surname}`)
+                        .services-total-cl--booking 
+                            h2.total-title--booking Service Total:
+                            h2.total-title--booking.services-final--total1 £0.00
+                        .services-total-cl--booking.total-final-booking--price
+                            h2.total-title--booking Total Booking Price:
+                            h2.total-title--booking.final-cost--total2 £0.00
+                    .button.button--md.button--blue.booking-btn2(data-clientemail=user.email) Make booking
+                .client-addr(data-clientaddr=user.client.location.address)
+
+        -if(hairdresser.review.length > 0)
+            section.view-hairdresser-reviews--section
+                .hairdresser-reviews
+                    for review in hairdresser.review
+                        .hairdresser-review--card
+                            .review-card--header
+                                img.reviews-card--header-img(src=`/Frontend/img/customers/${review.client.profileImg ? review.client.profileImg : 'original.jpg'}`, alt="Client Img")
+                                h6.review-header--client-name #{review.client.fullName}
+                            .review-mid--text #{review.review}
+                            div
+                                .profile-stars.profile-stars--review
+                                    .star-rating-num #{review.starRating}
+                                    .profile-star-rating.review-card--rating(style=`--star-rating: ${review.starRating}`)
+

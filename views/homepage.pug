@@ -1,0 +1,51 @@
+extends home 
+
+block navHeader
+    include _navHeader
+
+block mainPage 
+    main
+        section.landing-section 
+            .landing 
+                .landing-text-box 
+                    h1.heading-first A Hairdresser available on-demand wherever, whenever
+                    p.landing-description Making it possible to find and request hairdressers on-demand, catered to your location, time/date and service needs. Choose from a variety of available hairdressers, set your filters to narrow your search.
+                    a.btn.btn--cta.margin-right-sm(href="#") Find hairdressers
+                    a.btn.btn--learn-more(href="#") Learn more &darr;
+                    .servicing-hairdressers
+                        .serviced-imgs 
+                            img(src="/Frontend/img/customers/customer-1.jpg", alt="Customer photo")
+                            img(src="/Frontend/img/customers/customer-2.jpg", alt="Customer photo")
+                            img(src="/Frontend/img/customers/customer-3.jpg", alt="Customer photo")
+                            img(src="/Frontend/img/customers/customer-4.jpg", alt="Customer photo")
+                            img(src="/Frontend/img/customers/customer-5.jpg", alt="Customer photo")
+                            img(src="/Frontend/img/customers/customer-6.jpg", alt="Customer photo")
+                        .servicing-text 
+                            span Variety 
+                            inline of servicing hairdressers!
+                .landing-img-box
+                    img.landing-img(src="/Frontend/img/landing2.3.png", alt="hairdressers giving cuts")
+        
+        section.works-section 
+            .container  
+                span.works-subheading How It Works
+                h2.secondary-heading Recieve your haircut in 3 simple steps
+            .container.grid.grid--2-cols
+                .works-text-col
+                    p.step-work-number 01
+                    h3.third-heading Provide us your address
+                    p.step-work-description Provide us your address and we'll take care of the rest, using your location we will retrieve your coordinates and provide you with a variety of different registered hairdressers near you (to which you can filter or narrow down to fit your needs).
+                .step-work-img 
+                    img.step-img.step-img--desktop(src="Frontend/img/app/step_1_home.png", alt="Desktop image of address searchbar input")
+                .step-work-img
+                    img.step-img(src="Frontend/img/app/step_2.1_home.png", alt="Desktop image of address searchbar input")
+                .works-text-col
+                    p.step-work-number 02
+                    h3.third-heading Set/Define your requirements
+                    p.step-work-description You can define/set your requirements of hairdressers you're looking for, this may be hairdressers within a specified set proximity radius from your location, or the travel, gender, rating (and more) options to which you can filter for.
+                .works-text-col
+                    p.step-work-number 03
+                    h3.third-heading Select from a range of matching hairdressers and book
+                    p.step-work-description Once you receive a list of matching hairdressers, you can select the one you like the most, or the most suitable to your needs, from there you can proceed to view further details of the selected hairdresser and request an appointment booking for an available date-time slot.
+                .step-work-img 
+                    img.step-img.step-img--desktop(src="Frontend/img/app/step_3.1_home.png", alt="Desktop image of address searchbar input")

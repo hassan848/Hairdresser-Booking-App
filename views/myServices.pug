@@ -1,0 +1,50 @@
+extends home 
+
+block navHeader 
+    include _navHeader
+
+block mainPage 
+    main 
+        section.hairdresser-services-section.logged-in--services-section
+
+            .services-title-search.container.logged-in--services-title
+                h1 Add, Edit, Delete your Services
+                .search-services 
+                    input.search-services-input(type="text", placeholder="Search service...")
+                    button.search-services-btn 
+                        span.material-icons.search-icon-services search
+
+            .hairdresser-services-till-container.container.my-services--flex-container 
+                .hairdresser-services-container.logged-in--services-container.my-services--container
+                    each service in user.hairdresser.services
+                        .service-card.my-service-cards(data-serviceid=service._id)
+                            h3.service-title=service.title 
+                            p.service-price=`£${service.price}` 
+                            p.service-description=service.description 
+                            .service-update-div
+                                button.edit-service--btn-icon.service--delete-btn
+                                    span.material-icons delete 
+                                button.edit-service--btn-icon.service--edit-btn
+                                    span.material-icons.service--update-icon edit
+                
+            .new-service--div.container
+                button.new-service--btn Add Service
+
+    .services-form--window.hide
+        //- button.close-services-form ×
+        //- h2.services-window--title Specify Service Details
+        //- form.services-form--edit-add
+        //-     .form-section
+        //-         label.title-form.service--title-form(for="service-name") Service Name
+        //-         input.input-form.service--input-form(type="text", id="service-name", required)
+        //-     .form-section.form-service--space
+        //-         label.title-form.service--title-form(for="service-description") Service Description 
+        //-         textarea.service-description--input-form(name="service-description", id="service-description", cols="30", maxlength="150", rows="10", required) 
+        //-     .form-section
+        //-         label.title-form.service--title-form(for="service-price") Service Price (£)
+        //-         input.input-form.service--input-form.service--input-price(type="number", id="service-price", min="0.01", step="0.01", required)
+        //-     .form-section--btns
+        //-         a.service-form--btn.btn-cancel Cancel
+        //-         button.service-form--btn.btn-submit Submit
+
+    .shaded-background.hide

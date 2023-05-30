@@ -1,0 +1,126 @@
+extends home 
+
+block navHeader 
+    include _navHeader
+
+block mainPage 
+    main 
+        section.hairdresser-header-section(data-location=`${JSON.stringify(hairdresser.location.coordinates)}`)
+            .header-landing(data-id=hairdresser._id)
+                .header-title-photo 
+                    .card-profile--partition.header-profile--partition 
+                    img.card-profile-photo.header-profile-photo(src=`/Frontend/img/customers/${hairdresser.profileImg}.jpg`, alt="face image of hairdresser")
+                    .profile-rating.header-profile-rating 
+                        .profile-stars.header-profile-stars 
+                            .star-rating-num.header-rating-num=hairdresser.starRating
+                            .profile-star-rating.header-star-rating(style=`--star-rating: ${hairdresser.starRating}`)
+                        span.num-of-ratings.header-num-of-ratings= `rating(${hairdresser.numOfReviews})`
+                    .distance-to-hairdresser.profile-hairdresser-distance
+                        span.material-icons.place-icon.profile-place-icon place 
+                        .distance.profile-header-distance
+                            h3 0.9 miles 
+                            span.distance-msg.profile-distance-msg away from you 
+
+                .header-profile-description
+                    h3.card-name-heading.header-name-title
+                        span=hairdresser.fullName 
+                    .description-about-me
+                        h4.description-aboutme-header Description/About me
+                        p.aboutme-description= hairdresser.description
+                .header-profile-details
+                    h2.gradient-heading.more-details-heading More Details
+                    .grid.grid--2-cols.hairdresser-more-details
+                        .detail-info 
+                            - if(hairdresser.genderMarket === 'unisex')
+                                span.material-icons.info-icon wc 
+                            - if(hairdresser.genderMarket === 'male')
+                                span.material-icons.info-icon man 
+                            - if(hairdresser.genderMarket === 'female')
+                                span.material-icons.info-icon woman 
+                            span.info-title Service Gender 
+                            - if(hairdresser.genderMarket === 'unisex')
+                                p.info-text #[span Unisex] - this hairdresser can provide services for both males and females
+                            - if(hairdresser.genderMarket === 'male')
+                                p.info-text #[span Males] - this hairdresser can provide services to males only
+                            - if(hairdresser.genderMarket === 'female')
+                                p.info-text #[span Females] - this hairdresser can provide services to females only
+                        .detail-info 
+                            - if(hairdresser.workFlowDirection === 'bidirectional')
+                                span.material-icons.info-icon compare_arrows
+                                p.info-title Work Flow
+                                p.info-text #[span Both ways] - this hairdresser may or may not be able to travel to you #[span.work-flow-msg depending on your location], or you can travel to him/her
+                            - if(hairdresser.workFlowDirection === 'unidirectional')
+                                span.material-icons.info-icon arrow_right_alt
+                                p.info-title Work Flow
+                                p.info-text #[span One way] - this hairdresser is unidirectional and cannot travel to you, you must travel to him/her.
+                        
+                    .more-sub-info 
+                        p #[span.hairdresser--name=`${hairdresser.fullName}`]
+                        p.addr(data-address=hairdresser.location.address) #[span Address:]
+                            = ` ${hairdresser.location.address}`
+                        p.hairdresser--email(data-email=`${hairdresser.user.email}`) #[span Email: ] 
+                            = `${hairdresser.user.email}`
+                        //- p #[span Distance from you: ] 0.9 miles 
+                        p #[span Required proximity for hairdresser to travel to you: ] 
+                            = `Within ${hairdresser.proximity} miles`
+
+        section.header-helper-section 
+            .helper-landing
+                .helper-first 
+                .helper-second 
+                .helper-third 
+        
+        section.both-users-map-section
+            #mapbox-map
+
+        section.hairdresser-services-section
+
+            .services-title-search.container
+                h1 Select Services
+                .search-services 
+                    input.search-services-input(type="text", placeholder="Search service...")
+                    button.search-services-btn 
+                        span.material-icons.search-icon-services search
+
+            .hairdresser-services-till-container.container 
+                .hairdresser-services-container
+                    each service in hairdresser.services
+                        .service-card(data-serviceid=service._id)
+                            h3.service-title=service.title 
+                            p.service-price=`£${service.price}` 
+                            p.service-description=service.description 
+                            button.service-btn.add-service-btn Add to Service
+
+                    .bar-notify 
+                        span.material-icons task_alt 
+                        |Service Added
+                        ion-icon.close-bar(name="close-outline")
+                    .bar-notify-close  
+                        span.material-icons task_alt 
+                        |Service Removed!
+                        ion-icon.close-bar(name="close-outline")
+                .services-till
+                    .till-content
+                        h2 Services Amount
+                        .amount-elements
+                            //- .service-name-amount
+                            //-     span.service-el-name Face Mask
+                            //-     span £8.99
+
+                    .horiz-line
+                    .services-total-cl
+                        h2.total-title Services Total 
+                        span £0.00
+                    .proceed-btn-container
+                        button.proceed-button Continue
+
+        section.select-date-section 
+            .calendar-container.container 
+                .calendar(data-schedule=`${JSON.stringify(hairdresser.workSchedule)}`) 
+                    h2.calendar-title Select Time Slot 
+                    p.calendar-subtitle Current Week
+                    .seven-days
+
+                    .day-info
+
+                    .appointments

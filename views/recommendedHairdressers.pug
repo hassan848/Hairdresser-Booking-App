@@ -1,0 +1,152 @@
+extends home 
+
+block navHeader 
+    include _navHeader
+
+
+block mainPage
+    main 
+        section.hairdressers-section.recommend-section
+            .container.recommend-title(data-coords=JSON.stringify(coordinates))
+                div
+                    h1.find-heading.recommended-heading Recommended Hairdressers
+                    h1.recommended-subheading (Hairdressers For You)
+
+                img.hairdresser-logo(src='/Frontend/img/hairdresser-logo--black1.png', alt='Company Logo')
+
+            .hairdresser-filter.container
+                form.filter-form
+                    .filter-title
+                        span Filters Form
+                        button.filter-btn--mobile-el
+                            ion-icon.mobile-outline--icon(name='filter-outline')
+                    .filter-layout
+                        .filter-sections
+                            .filter-mobile-header
+                                h1.filter-title-mobile Filters
+                                button.filter-btn--mobile-el
+                                    ion-icon.mobile-filter--icon--close(name='close-outline')
+                            .filter-proximity(data-proximity=givenProximity)
+                                h1 Proximity Radius
+                                input.distance-input(type='number' placeholder='Within Distance Radius' min='0.01' step="0.01" value=givenProximity)
+                                select.distance_unit-metric(name='distance_metric')
+                                    option(value='mi') Mile
+                                    option(value='km') Km
+                            .filter-rating
+                                h1 Star Rating
+                                select.rating-options(id="rating-selections" name='customer-rating-options')
+                                    option(value='show-all') Show All
+                                    option(value='1-more')
+                                        span.star &starf;
+                                        |                       1 Star or more
+                                    option(value='2-more')
+                                        span.star &starf;
+                                        |                       2 Stars or more
+                                    option(value='3-more')
+                                        span.star &starf;
+                                        |                       3 Stars or more
+                                    option(value='4-more')
+                                        span.star &starf;
+                                        |                       4 Stars or more
+                                    option(value='5-more')
+                                        span.star &starf;
+                                        |                       5 Stars only
+                                .filter-star-text
+                                    | Show All 
+                                    span.filter-stars &starf;&starf;&starf;&starf;&starf;
+                            .filter-gender
+                                h1 Service for Gender
+                                .filter-gender-container
+                                    div
+                                        input#all(class="gender-checkbox-all" type='checkbox' name='gender-preference' value='all' checked='')
+                                        label(for='all') Show All
+                                    div
+                                        input#unisex(class="gender-checkbox" type='checkbox' name='gender-preference' value='unisex')
+                                        label(for='unisex') Unisex
+                                    div
+                                        input#male(class="gender-checkbox-male" type='checkbox' name='gender-preference' value='male')
+                                        label(for='male') Male
+                                    div
+                                        input#female(class="gender-checkbox-female" type='checkbox' name='gender-preference' value='female')
+                                        label(for='female') Female
+                            .filter-work_direction
+                                h1 Hairdresser Work Flow
+                                div
+                                    input#both(type='radio' name='work_direction-preference' value='both' checked='')
+                                    label(for='both') Show All
+                                div
+                                    input#unidirectional(type='radio' name='work_direction-preference' value='unidirectional')
+                                    label(for='unidirectional') Travel to Hairdresser only
+                                div
+                                    input#bidirectional(type='radio' name='work_direction-preference' value='bidirectional')
+                                    label(for='bidirectional') Both ways - optional
+                                    label.bidirectional-option (Hairdresser can travel to you)
+                        .filter-buttons
+                            button.button.button--sml.button--blue.button--filter.apply-filter Apply Filter
+                            button.button.button--sml.button--black.button--filter.reset-filter Reset Filter
+
+            .hairdresser-results--msg.container
+                -if(hairdressers.length > 0)
+                    h2 #{hairdressers.length} Results, we found #{hairdressers.length} hairdressers matching your needs! <br> Your Set Radius: #{givenProximity.toFixed(2)} Miles = #{(givenProximity * 1.609).toFixed(2)} KM
+                -if(hairdressers.length == 0)
+                    h2 0 Results, we couldn't find any recommended hairdressers. Try changing your filter settings or proximity radius for a wider search! <br> Current Set Radius: #{givenProximity.toFixed(2)} Miles = #{(givenProximity * 1.609).toFixed(2)} KM
+
+
+
+            .tabview-container
+                .recommend-tab-buttons.container
+                    button.tab-button.tab-button--active Card View
+                    button.tab-button Map View
+            
+            
+            -if(hairdressers.length > 0)
+                .hairdresser-card-conatiner.container(data-hairdressers=JSON.stringify(hairdressers))
+                    each hairdresser in hairdressers
+                        .hairdresser-card 
+                            .hairdresser-card-header 
+                                .card-profile 
+                                .card-profile--partition 
+                                img.card-profile-photo(src=`/Frontend/img/customers/${hairdresser.profileImg}`, alt="")
+                                h3.card-name-heading
+                                    span=hairdresser.fullName
+                                .profile-rating
+                                    .profile-stars
+                                        .star-rating-num=hairdresser.starRating
+                                        .profile-star-rating(style=`--star-rating: ${hairdresser.starRating}`)
+                                    span.num-of-ratings ratings (#{hairdresser.numOfReviews})
+                                .distance-to-hairdresser
+                                    span.material-icons.place-icon place
+                                    .distance
+                                        h3 #{Math.round((hairdresser.distance + Number.EPSILON) * 100) / 100} miles
+                                        span.distance-msg away from you
+
+                            .hairdresser-card-description
+                                h4.hairdresser-description-heading Self description
+                                p.hairdresser-description-text #{hairdresser.description}
+
+                            .hairdresser-card-services
+                                .horizontal-line
+                                    h4.hairdresser-services-heading Services
+                                .hairdresser-services
+                                    each service in hairdresser.servicesTitles
+                                        .service-chip=service
+                            
+                            .hairdresser_card-bottom
+                                .card-details
+                                    -if(hairdresser.genderMarket == 'unisex')
+                                        span.material-icons wc
+                                    -if(hairdresser.genderMarket == 'male')
+                                        span.material-icons man
+                                    -if(hairdresser.genderMarket == 'female')
+                                        span.material-icons woman
+                                    span #{hairdresser.genderMarket.charAt(0).toUpperCase() + hairdresser.genderMarket.slice(1)}
+                                .card-details.direction
+                                    span.material-icons #{hairdresser.workFlowDirection == "bidirectional" ? "compare_arrows" : "arrow_right_alt"}
+                                    span #{hairdresser.workFlowDirection == "bidirectional" ? "Both ways" : "One way"}
+                                a.button.button--sml.button--blue(href=`/hairdresser/${hairdresser._id}`) More Details
+
+            .hairdresser-map-container.card-results__content--inactive
+                .submenu
+                    img.hairdresser-logo(src="/Frontend/img/hairdresser-logo.png", alt="company logo")
+                    .tiles
+                div#map

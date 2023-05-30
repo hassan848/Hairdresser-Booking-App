@@ -1,0 +1,21 @@
+extends home 
+
+block navHeader 
+    include _navHeader
+
+block mainPage
+    main 
+        .login-container 
+            .login-account-container 
+                h2.login-secondary-heading Login to your account
+                form.login-form
+                    .form-section 
+                        label.title-form(for="email") Email Address 
+                        input.input-form(type="email", id="email", placeholder="Please enter your email", required) 
+                    .form-section.form-section--space 
+                        label.title-form(for="password") Password
+                        input.input-form(type="password", id="password", for="password", placeholder="•••••••••", minlength="8", required)
+                    .form-section.form-btns 
+                        button.button.button--md.button--blue.login--btn Login
+                    .form-section.forgot-pass
+                        a.forgot-pass-form(href="/forgotPassEmail") Forgot Password?

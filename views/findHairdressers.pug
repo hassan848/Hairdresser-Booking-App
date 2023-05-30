@@ -1,0 +1,120 @@
+extends home 
+
+block navHeader 
+    - if(!user)
+        header.header
+            p
+            nav.nav--overall
+                nav.nav.nav--compulsory 
+                    a.nav__element(href='/findHairdressers') Find Hairdressers
+                    a.nav__element(href='/') How It Works 
+                nav.nav.nav--users 
+                    a.nav__element.nav__element--cta.nav__element--hairdresser(href="/hairdresserSignup") Become A Hairdresser
+                    a.nav__element(href="/login") Login
+                    a.nav__element.nav__element--cta(href='signup') Sign Up
+            button.nav-btn--mobile-el
+                ion-icon.mobile-nav--icon(name='menu-outline')
+                ion-icon.mobile-nav--icon--close(name='close-outline')
+
+    - if (user && user.user_role === 'client') 
+        header.header
+            p
+            nav.nav--overall
+                nav.nav.nav--compulsory 
+                    a.nav__element(href='/findHairdressers') Find Hairdressers
+                    a.nav__element(href='/recommendedHairdressers') Recommended Hairdressers 
+                    a.nav__element(href='/bookmarkedHairdressers') Your Hairdressers 
+                nav.nav.nav--users.nav--account
+                    a.nav__element.logout--btn LOG OUT
+                    a.nav__element.nav_element--profile(href='/profilePage')
+                        img.header__img-logo(src=`/Frontend/img/customers/${user.client.profileImg}`, alt="Profile")
+                        span= user.name.split(' ')[0]
+            button.nav-btn--mobile-el
+                ion-icon.mobile-nav--icon(name='menu-outline')
+                ion-icon.mobile-nav--icon--close(name='close-outline')
+            
+    - if (user && user.user_role === 'hairdresser') 
+        header.header
+            p
+            nav.nav--overall
+                nav.nav.nav--compulsory 
+                    a.nav__element(href='/') How It Works 
+                    a.nav__element(href='/my-appointments') Manage Appointments
+                    a.nav__element(href='/myServices') My Services
+                //- .header__img-logo
+                //-     a(href="/") 
+                //-         img(src="/Frontend/img/hairdresser-logo.png", alt="Company Logo")
+                    
+                    //- img(src="/Frontend/img/hairdresser-logo.png", alt="Company Logo")
+                nav.nav.nav--users.nav--account
+                    //- a.nav__element Find Hairdresser
+                    a.nav__element.logout--btn LOG OUT
+                    a.nav__element.nav_element--profile(href='/profilePage')
+                        img.header__img-logo(src=`/Frontend/img/customers/${user.hairdresser.profileImg}`, alt="Profile")
+                        span= user.name.split(' ')[0]
+            button.nav-btn--mobile-el
+                ion-icon.mobile-nav--icon(name='menu-outline')
+                ion-icon.mobile-nav--icon--close(name='close-outline')
+    //- - if(user.user_role === 'client ')
+    //- - if(!user)
+    //-     header.header
+    //-         p
+    //-         nav.nav--overall
+    //-             nav.nav.nav--compulsory 
+    //-                 a.nav__element(href='/findHairdressers') Find Hairdressers
+    //-                 a.nav__element(href='/') How It Works 
+    //-             nav.nav.nav--users 
+    //-                 a.nav__element.nav__element--cta.nav__element--hairdresser(href="#") Become A Hairdresser
+    //-                 a.nav__element(href="/login") Login
+    //-                 a.nav__element.nav__element--cta(href='#') Sign Up
+    //-         button.nav-btn--mobile-el
+    //-             ion-icon.mobile-nav--icon(name='menu-outline')
+    //-             ion-icon.mobile-nav--icon--close(name='close-outline')
+
+    //- - if (user && user.user_role === 'client') 
+    //-     header.header
+    //-         p
+    //-         nav.nav--overall
+    //-             nav.nav.nav--compulsory 
+    //-                 a.nav__element(href='/findHairdressers') Find Hairdressers
+    //-                 a.nav__element(href='/') How It Works 
+    //-             nav.nav.nav--users.nav--account
+    //-                 a.nav__element.logout--btn LOG OUT
+    //-                 a.nav__element.nav_element--profile(href='#')
+    //-                     img.header__img-logo(src="Frontend/img/customers/original.jpg", alt="")
+    //-                     span= user.name.split(' ')[0]
+    //-         button.nav-btn--mobile-el
+    //-             ion-icon.mobile-nav--icon(name='menu-outline')
+    //-             ion-icon.mobile-nav--icon--close(name='close-outline')
+            
+    //- - if (user && user.user_role === 'hairdresser') 
+    //-     header.header
+    //-         p
+    //-         nav.nav--overall
+    //-             nav.nav.nav--compulsory 
+    //-                 a.nav__element(href='/findHairdressers') Find Hairdressers
+    //-                 a.nav__element(href='/') How It Works 
+    //-             nav.nav.nav--users.nav--account
+    //-                 a.nav__element(href='/myServices') MY SERVICES
+    //-                 a.nav__element.logout--btn LOG OUT
+    //-                 a.nav__element.nav_element--profile(href='#')
+    //-                     img.header__img-logo(src=`Frontend/img/customers/${user.hairdresser.profileImg}.jpg`, alt="")
+    //-                     span= user.name.split(' ')[0]
+    //-         button.nav-btn--mobile-el
+    //-             ion-icon.mobile-nav--icon(name='menu-outline')
+    //-             ion-icon.mobile-nav--icon--close(name='close-outline')
+
+block mainPage
+    main 
+        section.find-title-section
+            .container.find-title 
+                h1.find-heading Find Hairdressers
+                img.hairdresser-logo(src="/Frontend/img/hairdresser-logo.png", alt="")
+            .search-location-box 
+                img.location-symbol(src="/Frontend/img/location-symbol.png", alt="location-pointer")
+                input.search-location-input(type="text", placeholder="Enter your current address")
+                img.search-icon(src="/Frontend/img/search-icon.png", alt="search-icon")
+                .vertical-line 
+                button.gps-btn(type="button")
+                    i.material-icons gps_fixed
+                

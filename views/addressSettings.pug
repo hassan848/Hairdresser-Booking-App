@@ -1,0 +1,116 @@
+extends home 
+
+block navHeader 
+    include _navHeader
+
+
+block mainPage 
+    main.main-profile
+        .profile-settings--container
+            nav.profile-settings--sidebar
+                ul.sidebar-nav
+                    li
+                        a.sidebar-item(href='/profilePage')
+                            ion-icon.sidebar-icon(name='settings-outline')
+                            | MY SETTINGS
+                    li.sidebar-nav--current
+                        a.sidebar-item(href='/addressSettings')
+                            ion-icon.sidebar-icon(name='home-outline')
+                            | Address Settings
+                    li
+                        a.sidebar-item(href='#')
+                            ion-icon.sidebar-icon(name='star-outline')
+                            | MY Reviews
+                    -if(user.user_role === 'client')
+                        li
+                            a.sidebar-item(href='/my-booking-history')
+                                ion-icon.sidebar-icon(name='archive-outline')
+                                //- span.sidebar-item.material-symbols-outlined event_upcoming 
+                                | MY Bookings History
+                    -if(user.user_role === 'hairdresser')
+                        li
+                            a.sidebar-item(href='/my-appointments')
+                                //- ion-icon.sidebar-icon(name='archive-outline')
+                                span.sidebar-item.material-symbols-outlined event_upcoming 
+                                | MY Appointments
+
+                -if(user.user_role === 'hairdresser')
+                    .hairdresser-navigation-item
+                        h5.hairdresser-sidebar-title Hairdresser  Settings
+                        ul.sidebar-nav
+                            li
+                                a.sidebar-item(href='/workSchedule')
+                                    ion-icon.sidebar-icon(name='calendar-outline')
+                                    | MY Work Schedule
+                            li
+                                a.sidebar-item(href='/myServices')
+                                    span.sidebar-item.material-symbols-outlined cut
+                                    | MY SERVICES
+                            li
+                                a.sidebar-item(href='#')
+                                    span.sidebar-item.material-symbols-outlined wc
+                                    | Gender Market
+
+
+            .profile-settings--main-section
+                .profile-section--main-container
+                    h2.profile-settings--heading.heading-mb-sm My Address Settings
+                    -if(user.user_role === 'hairdresser')
+                        p.random_title.hairdresser-user 
+                            span.labelWeight Current Address: 
+                            span.saved-address #{user.hairdresser.location.address} 
+                        p.random_title 
+                            span.labelWeight Set Proximity: 
+                            span.saved-proximity #{user.hairdresser.proximity} miles
+                    -if(user.user_role === 'client')
+                        p.random_title.client-user
+                            span.labelWeight Current Address: 
+                            span.saved-address #{user.client.location.address} 
+                        p.random_title 
+                            span.labelWeight Set Proximity: 
+                            span.saved-proximity #{user.client.proximity} miles
+
+                    h2.profile-settings--heading.heading-mb-sm.second-header--settings Update Address
+
+                    form.mt-mid.address-form
+                        .signup--form-section.address--street.full_width.mobile_input--length
+                            div
+                                label.title-form(for="street") Street Name
+                                input.input-form(type="text", id="street", placeholder="Harley street", required)
+                            div
+                                label.title-form(for="text") Door Number
+                                input.input-form(type="text", id="door-num", placeholder="65", required)
+                        .signup--form-section.form-section--space.address--town-postcode.full_width.mobile_input--length
+                            div 
+                                label.title-form(for="city") Town/City
+                                input.input-form(type="text", id="city", placeholder="London, Ilford", required)
+                            div 
+                                label.title-form(for="postcode") Postcode 
+                                input.input-form(type="text", id="postcode", placeholder="IG1 3J6", required)
+                
+                        //- .form-section.form-btns.both--form-btns
+                        .align-save-changes
+                            button.btn.button--blue.btn--update-profile.setting--btn Save Changes
+                        //-     a.button.button--md.button--blue.signup-back Back
+                        //-     button.button.button--md.button--blue.signup-submit Submit
+
+                .profile--line-seperation
+                .profile-section--main-container
+                    h2.profile-settings--heading.heading-mb-sm.second-header--settings Update Set Proximity
+                    form.proximity-form
+                        .signup--form-section.form-section--space.proximity--contact.full_width.mobile_input--length
+                            div 
+                                label.title-form.spec-location(for="proximity-dis") Default Proximity (miles)
+                                -if(user.user_role === 'hairdresser')
+                                    input.input-form(type="number", id="proximity-dis", min="0.1", step="any", value=user.hairdresser.proximity, placeholder="5", required)
+                                -if(user.user_role === 'client')
+                                    input.input-form(type="number", id="proximity-dis", min="0.1", step="any", value=user.client.proximity, placeholder="5", required)
+
+                            div 
+                                label.title-form(for="mobile-num") Mobile Number                  
+                                    input.input-form(type="text", id="mobile-num", placeholder="07808152451")
+                                    //- input.input-form(type="text", id="mobile-num", placeholder="07808152451")
+                                    
+
+                        .align-save-changes
+                            button.btn.button--blue.btn--update-profile.save--proximity.setting--btn Update Changes

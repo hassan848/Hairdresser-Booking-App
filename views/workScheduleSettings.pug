@@ -1,0 +1,834 @@
+extends home 
+
+block navHeader 
+    include _navHeader
+
+
+block mainPage 
+    main.main-profile
+        .profile-settings--container
+            nav.profile-settings--sidebar
+                ul.sidebar-nav
+                    li
+                        a.sidebar-item(href='/profilePage')
+                            ion-icon.sidebar-icon(name='settings-outline')
+                            | MY SETTINGS
+                    li
+                        a.sidebar-item(href='/addressSettings')
+                            ion-icon.sidebar-icon(name='home-outline')
+                            | Address Settings
+                    li
+                        a.sidebar-item(href='#')
+                            ion-icon.sidebar-icon(name='star-outline')
+                            | MY Reviews
+                    -if(user.user_role === 'client')
+                        li
+                            a.sidebar-item(href='/my-booking-history')
+                                ion-icon.sidebar-icon(name='archive-outline')
+                                //- span.sidebar-item.material-symbols-outlined event_upcoming 
+                                | MY Bookings History
+                    -if(user.user_role === 'hairdresser')
+                        li
+                            a.sidebar-item(href='/my-appointments')
+                                //- ion-icon.sidebar-icon(name='archive-outline')
+                                span.sidebar-item.material-symbols-outlined event_upcoming 
+                                | MY Appointments
+
+                -if(user.user_role === 'hairdresser')
+                    .hairdresser-navigation-item
+                        h5.hairdresser-sidebar-title Hairdresser  Settings
+                        ul.sidebar-nav
+                            li.sidebar-nav--current
+                                a.sidebar-item(href='/workSchedule')
+                                    ion-icon.sidebar-icon(name='calendar-outline')
+                                    | MY Work Schedule
+                            li
+                                a.sidebar-item(href='/myServices')
+                                    span.sidebar-item.material-symbols-outlined cut
+                                    | MY SERVICES
+                            li
+                                a.sidebar-item(href='#')
+                                    span.sidebar-item.material-symbols-outlined wc
+                                    | Gender Market
+                
+            .profile-settings--main-section
+                .profile-section--main-container.less-padding
+                    -if(homeAppointCost)
+                        h2.profile-settings--heading(data-homecost=homeAppointCost) My Work Schedule
+                    -if(!homeAppointCost)
+                        h2.profile-settings--heading My Work Schedule
+                    
+                    form.hairdresser-workSchedule
+                        .signup--form-section.schedule-signup--form-sec.manage-schedule.full_width.schedule-day--space.mobile_input--length 
+                            label.title-form(for="workFlowDirection") Work Orientation
+                            -if(workFlowDirection == 'bidirectional')
+                                select.input-form(id="workFlowDirection")
+                                    option.input-form(value="bidirectional" selected)= `Clients travel to you & you travel to clients`
+                                    option.input-form(value="unidirectional") Clients travel to you only
+                            -if(workFlowDirection == 'unidirectional')
+                                select.input-form(id="workFlowDirection")
+                                    option.input-form(value="bidirectional")= `Clients travel to you & you travel to clients`
+                                    option.input-form(value="unidirectional" selected) Clients travel to you only
+                        
+                        //- <div class="signup--form-section schedule-signup--form-sec manage-schedule full_width schedule-day--space">
+                        //-     <label class="title-form" for="workFlowDirection">Work Orientation </label>
+                        //-     <select class="input-form" id="workFlowDirection">
+                        //-         <option class="input-form" value="bidirectional">Clients travel to you &amp; you travel to clients</option>
+                        //-         <option class="input-form" value="unidirectional">Clients travel to you only</option>
+                        //-     </select>
+                        //- </div>
+                        //- - const workSchedule = JSON.parse(document.querySelector('.workSchedule-data').dataset.workschedule);
+                        -if(workFlowDirection == 'bidirectional')
+                            .signup--form-section.schedule-signup--form-sec.manage-schedule.full_width.schedule-day--space.homeCostOption.mobile_input--length
+                                label.title-form(for="home-appoint-price") Home Appointment Cost (extra cost for you to travel to clients - optional)
+                                //- <input type="number" id="service-price" min="0.01" step="0.01" class="input-form service--input-form service--input-price" value="10.99" required="">
+                                -if(homeAppointCost)
+                                    input.input-form.home-appointments--price.service--input-price(type="number", id="home-appoint-price", step="0.01", min=0, value=homeAppointCost)
+                                -if(!homeAppointCost)
+                                    input.input-form.home-appointments--price.service--input-price(type="number", id="home-appoint-price", step="0.01", min=0)
+
+                            
+
+                        div.workSchedule-data(data-workSchedule=`${JSON.stringify(workSchedule)}`)
+                            .signup--form-section.schedule-signup--form-sec.mon-tues--schedule.full_width.schedule-day--space.mobile_input--length 
+                                div 
+                                    div
+                                        label.title-form(for="dayFlowDirection-mon") Monday 
+                                        select.input-form.schedule-input(id="dayFlowDirection-mon")
+                                            option(value="shop") Clients travel to you on this day!
+                                            -if(workFlowDirection == 'bidirectional')
+                                                option(value="home") You travel to clients on this day!
+                                            option(value="dayoff") Take Dayoff 
+                                    .select-work-times.schedule-item
+                                        div 
+                                            label.title-form.schedule-title-form(for="startTime-mon") Start
+                                            select.input-form.schedule-input(id="startTime-mon")
+                                                option(value="00:00") 00:00
+                                                option(value="01:00") 01:00
+                                                option(value="02:00") 02:00
+                                                option(value="03:00") 03:00
+                                                option(value="04:00") 04:00
+                                                option(value="05:00") 05:00
+                                                option(value="06:00") 06:00
+                                                option(value="07:00") 07:00
+                                                option(value="08:00") 08:00
+                                                option(value="09:00") 09:00
+                                                option(value="10:00") 10:00
+                                                option(value="11:00") 11:00
+                                                option(value="12:00") 12:00
+                                                option(value="13:00") 13:00
+                                                option(value="14:00") 14:00
+                                                option(value="15:00") 15:00
+                                                option(value="16:00") 16:00
+                                                option(value="17:00") 17:00
+                                                option(value="18:00") 18:00
+                                                option(value="19:00") 19:00
+                                                option(value="20:00") 20:00
+                                                option(value="21:00") 21:00
+                                                option(value="22:00") 22:00
+                                                option(value="23:00") 23:00
+
+                                        div 
+                                            label.title-form.schedule-title-form(for="endTime-mon") End 
+                                            select.input-form.schedule-input(id="endTime-mon") 
+                                                option(value="01:00") 01:00
+                                                option(value="02:00") 02:00
+                                                option(value="03:00") 03:00
+                                                option(value="04:00") 04:00
+                                                option(value="05:00") 05:00
+                                                option(value="06:00") 06:00
+                                                option(value="07:00") 07:00
+                                                option(value="08:00") 08:00
+                                                option(value="09:00") 09:00
+                                                option(value="10:00") 10:00
+                                                option(value="11:00") 11:00
+                                                option(value="12:00") 12:00
+                                                option(value="13:00") 13:00
+                                                option(value="14:00") 14:00
+                                                option(value="15:00") 15:00
+                                                option(value="16:00") 16:00
+                                                option(value="17:00") 17:00
+                                                option(value="18:00") 18:00
+                                                option(value="19:00") 19:00
+                                                option(value="20:00") 20:00
+                                                option(value="21:00") 21:00
+                                                option(value="22:00") 22:00
+                                                option(value="23:00") 23:00
+                                        //- script.
+                                        //-     console.log('lworkowkorkroko')
+                                    .slot-timings.schedule-item
+                                        div 
+                                            label.title-form.schedule-title-form(for="slotLength-mon") Slots Length 
+                                            select.input-form.schedule-input(id="slotLength-mon")
+                                                option(value="00:15") 15 mins                               
+                                                option(value="00:30") 30 mins                               
+                                                option(value="00:45") 45 mins                               
+                                                option(value="01:00") 1 hour                               
+                                                option(value="01:15") 1hr 15mins                               
+                                                option(value="01:30") 1hr 30mins                               
+                                                option(value="01:45") 1hr 45mins                             
+                                                option(value="02:00") 2 hours     
+                                        div 
+                                            label.title-form.schedule-title-form(for="slotBreak-mon") Slots Break 
+                                            select.input-form.schedule-input(id="slotBreak-mon")
+                                                option(value="00:05") 5 mins                          
+                                                option(value="00:10") 10 mins                          
+                                                option(value="00:15") 15 mins                          
+                                                option(value="00:20") 20 mins                          
+                                                option(value="00:25") 25 mins                          
+                                                option(value="00:30") 30 mins                          
+                                                option(value="00:35") 35 mins                          
+                                                option(value="00:40") 40 mins                          
+                                                option(value="00:45") 45 mins                          
+                                                option(value="00:50") 50 mins                          
+                                                option(value="00:55") 55 mins                          
+                                                option(value="01:00") 60 mins  
+                                div                        
+                                    div
+                                        label.title-form(for="dayFlowDirection-mon") Tuesday 
+                                        select.input-form.schedule-input(id="dayFlowDirection-tue")
+                                            option(value="shop") Clients travel to you on this day!
+                                            -if(workFlowDirection == 'bidirectional')
+                                                option(value="home") You travel to clients on this day!
+                                            option(value="dayoff") Take Dayoff 
+                                    .select-work-times.schedule-item
+                                        div 
+                                            label.title-form.schedule-title-form(for="startTime-tue") Start
+                                            select.input-form.schedule-input(id="startTime-tue")
+                                                option(value="00:00") 00:00
+                                                option(value="01:00") 01:00
+                                                option(value="02:00") 02:00
+                                                option(value="03:00") 03:00
+                                                option(value="04:00") 04:00
+                                                option(value="05:00") 05:00
+                                                option(value="06:00") 06:00
+                                                option(value="07:00") 07:00
+                                                option(value="08:00") 08:00
+                                                option(value="09:00") 09:00
+                                                option(value="10:00") 10:00
+                                                option(value="11:00") 11:00
+                                                option(value="12:00") 12:00
+                                                option(value="13:00") 13:00
+                                                option(value="14:00") 14:00
+                                                option(value="15:00") 15:00
+                                                option(value="16:00") 16:00
+                                                option(value="17:00") 17:00
+                                                option(value="18:00") 18:00
+                                                option(value="19:00") 19:00
+                                                option(value="20:00") 20:00
+                                                option(value="21:00") 21:00
+                                                option(value="22:00") 22:00
+                                                option(value="23:00") 23:00
+                                        div 
+                                            label.title-form.schedule-title-form(for="endTime-tue") End 
+                                            select.input-form.schedule-input(id="endTime-tue") 
+                                                option(value="01:00") 01:00
+                                                option(value="02:00") 02:00
+                                                option(value="03:00") 03:00
+                                                option(value="04:00") 04:00
+                                                option(value="05:00") 05:00
+                                                option(value="06:00") 06:00
+                                                option(value="07:00") 07:00
+                                                option(value="08:00") 08:00
+                                                option(value="09:00") 09:00
+                                                option(value="10:00") 10:00
+                                                option(value="11:00") 11:00
+                                                option(value="12:00") 12:00
+                                                option(value="13:00") 13:00
+                                                option(value="14:00") 14:00
+                                                option(value="15:00") 15:00
+                                                option(value="16:00") 16:00
+                                                option(value="17:00") 17:00
+                                                option(value="18:00") 18:00
+                                                option(value="19:00") 19:00
+                                                option(value="20:00") 20:00
+                                                option(value="21:00") 21:00
+                                                option(value="22:00") 22:00
+                                                option(value="23:00") 23:00
+                                    .slot-timings.schedule-item
+                                        div 
+                                            label.title-form.schedule-title-form(for="slotLength-tue") Slots Length 
+                                            select.input-form.schedule-input(id="slotLength-tue")
+                                                option(value="00:15") 15 mins                               
+                                                option(value="00:30") 30 mins                               
+                                                option(value="00:45") 45 mins                               
+                                                option(value="01:00") 1 hour                               
+                                                option(value="01:15") 1hr 15mins                               
+                                                option(value="01:30") 1hr 30mins                               
+                                                option(value="01:45") 1hr 45mins                             
+                                                option(value="02:00") 2 hours       
+                                        div 
+                                            label.title-form.schedule-title-form(for="slotBreak-tue") Slots Break 
+                                            select.input-form.schedule-input(id="slotBreak-tue")
+                                                option(value="00:05") 5 mins                          
+                                                option(value="00:10") 10 mins                          
+                                                option(value="00:15") 15 mins                          
+                                                option(value="00:20") 20 mins                          
+                                                option(value="00:25") 25 mins                          
+                                                option(value="00:30") 30 mins                          
+                                                option(value="00:35") 35 mins                          
+                                                option(value="00:40") 40 mins                          
+                                                option(value="00:45") 45 mins                          
+                                                option(value="00:50") 50 mins                          
+                                                option(value="00:55") 55 mins                          
+                                                option(value="01:00") 60 mins
+
+                            .signup--form-section.schedule-signup--form-sec.wed-thurs--schedule.full_width.schedule-day--space.mobile_input--length 
+                                div 
+                                    div
+                                        label.title-form(for="dayFlowDirection-wed") Wednesday 
+                                        select.input-form.schedule-input(id="dayFlowDirection-wed")
+                                            option(value="shop") Clients travel to you on this day!
+                                            -if(workFlowDirection == 'bidirectional')
+                                                option(value="home") You travel to clients on this day!
+                                            option(value="dayoff") Take Dayoff 
+                                    .select-work-times.schedule-item
+                                        div 
+                                            label.title-form.schedule-title-form(for="startTime-wed") Start
+                                            select.input-form.schedule-input(id="startTime-wed")
+                                                option(value="00:00") 00:00
+                                                option(value="01:00") 01:00
+                                                option(value="02:00") 02:00
+                                                option(value="03:00") 03:00
+                                                option(value="04:00") 04:00
+                                                option(value="05:00") 05:00
+                                                option(value="06:00") 06:00
+                                                option(value="07:00") 07:00
+                                                option(value="08:00") 08:00
+                                                option(value="09:00") 09:00
+                                                option(value="10:00") 10:00
+                                                option(value="11:00") 11:00
+                                                option(value="12:00") 12:00
+                                                option(value="13:00") 13:00
+                                                option(value="14:00") 14:00
+                                                option(value="15:00") 15:00
+                                                option(value="16:00") 16:00
+                                                option(value="17:00") 17:00
+                                                option(value="18:00") 18:00
+                                                option(value="19:00") 19:00
+                                                option(value="20:00") 20:00
+                                                option(value="21:00") 21:00
+                                                option(value="22:00") 22:00
+                                                option(value="23:00") 23:00
+                                        div 
+                                            label.title-form.schedule-title-form(for="endTime-wed") End 
+                                            select.input-form.schedule-input(id="endTime-wed") 
+                                                option(value="01:00") 01:00
+                                                option(value="02:00") 02:00
+                                                option(value="03:00") 03:00
+                                                option(value="04:00") 04:00
+                                                option(value="05:00") 05:00
+                                                option(value="06:00") 06:00
+                                                option(value="07:00") 07:00
+                                                option(value="08:00") 08:00
+                                                option(value="09:00") 09:00
+                                                option(value="10:00") 10:00
+                                                option(value="11:00") 11:00
+                                                option(value="12:00") 12:00
+                                                option(value="13:00") 13:00
+                                                option(value="14:00") 14:00
+                                                option(value="15:00") 15:00
+                                                option(value="16:00") 16:00
+                                                option(value="17:00") 17:00
+                                                option(value="18:00") 18:00
+                                                option(value="19:00") 19:00
+                                                option(value="20:00") 20:00
+                                                option(value="21:00") 21:00
+                                                option(value="22:00") 22:00
+                                                option(value="23:00") 23:00
+                                    .slot-timings.schedule-item
+                                        div 
+                                            label.title-form.schedule-title-form(for="slotLength-wed") Slots Length 
+                                            select.input-form.schedule-input(id="slotLength-wed")
+                                                option(value="00:15") 15 mins                               
+                                                option(value="00:30") 30 mins                               
+                                                option(value="00:45") 45 mins                               
+                                                option(value="01:00") 1 hour                               
+                                                option(value="01:15") 1hr 15mins                               
+                                                option(value="01:30") 1hr 30mins                               
+                                                option(value="01:45") 1hr 45mins                             
+                                                option(value="02:00") 2 hours       
+                                        div 
+                                            label.title-form.schedule-title-form(for="slotBreak-wed") Slots Break 
+                                            select.input-form.schedule-input(id="slotBreak-wed")
+                                                option(value="00:05") 5 mins                          
+                                                option(value="00:10") 10 mins                          
+                                                option(value="00:15") 15 mins                          
+                                                option(value="00:20") 20 mins                          
+                                                option(value="00:25") 25 mins                          
+                                                option(value="00:30") 30 mins                          
+                                                option(value="00:35") 35 mins                          
+                                                option(value="00:40") 40 mins                          
+                                                option(value="00:45") 45 mins                          
+                                                option(value="00:50") 50 mins                          
+                                                option(value="00:55") 55 mins                          
+                                                option(value="01:00") 60 mins  
+                                div                        
+                                    div
+                                        label.title-form(for="dayFlowDirection-thu") Thursday 
+                                        select.input-form.schedule-input(id="dayFlowDirection-thu")
+                                            option(value="shop") Clients travel to you on this day!
+                                            -if(workFlowDirection == 'bidirectional')
+                                                option(value="home") You travel to clients on this day!
+                                            option(value="dayoff") Take Dayoff 
+                                    .select-work-times.schedule-item
+                                        div 
+                                            label.title-form.schedule-title-form(for="startTime-thu") Start
+                                            select.input-form.schedule-input(id="startTime-thu")
+                                                option(value="00:00") 00:00
+                                                option(value="01:00") 01:00
+                                                option(value="02:00") 02:00
+                                                option(value="03:00") 03:00
+                                                option(value="04:00") 04:00
+                                                option(value="05:00") 05:00
+                                                option(value="06:00") 06:00
+                                                option(value="07:00") 07:00
+                                                option(value="08:00") 08:00
+                                                option(value="09:00") 09:00
+                                                option(value="10:00") 10:00
+                                                option(value="11:00") 11:00
+                                                option(value="12:00") 12:00
+                                                option(value="13:00") 13:00
+                                                option(value="14:00") 14:00
+                                                option(value="15:00") 15:00
+                                                option(value="16:00") 16:00
+                                                option(value="17:00") 17:00
+                                                option(value="18:00") 18:00
+                                                option(value="19:00") 19:00
+                                                option(value="20:00") 20:00
+                                                option(value="21:00") 21:00
+                                                option(value="22:00") 22:00
+                                                option(value="23:00") 23:00
+                                        div 
+                                            label.title-form.schedule-title-form(for="endTime-thu") End 
+                                            select.input-form.schedule-input(id="endTime-thu") 
+                                                option(value="01:00") 01:00
+                                                option(value="02:00") 02:00
+                                                option(value="03:00") 03:00
+                                                option(value="04:00") 04:00
+                                                option(value="05:00") 05:00
+                                                option(value="06:00") 06:00
+                                                option(value="07:00") 07:00
+                                                option(value="08:00") 08:00
+                                                option(value="09:00") 09:00
+                                                option(value="10:00") 10:00
+                                                option(value="11:00") 11:00
+                                                option(value="12:00") 12:00
+                                                option(value="13:00") 13:00
+                                                option(value="14:00") 14:00
+                                                option(value="15:00") 15:00
+                                                option(value="16:00") 16:00
+                                                option(value="17:00") 17:00
+                                                option(value="18:00") 18:00
+                                                option(value="19:00") 19:00
+                                                option(value="20:00") 20:00
+                                                option(value="21:00") 21:00
+                                                option(value="22:00") 22:00
+                                                option(value="23:00") 23:00
+                                    .slot-timings.schedule-item
+                                        div 
+                                            label.title-form.schedule-title-form(for="slotLength-thu") Slots Length 
+                                            select.input-form.schedule-input(id="slotLength-thu")
+                                                option(value="00:15") 15 mins                               
+                                                option(value="00:30") 30 mins                               
+                                                option(value="00:45") 45 mins                               
+                                                option(value="01:00") 1 hour                               
+                                                option(value="01:15") 1hr 15mins                               
+                                                option(value="01:30") 1hr 30mins                               
+                                                option(value="01:45") 1hr 45mins                             
+                                                option(value="02:00") 2 hours       
+                                        div 
+                                            label.title-form.schedule-title-form(for="slotBreak-thu") Slots Break 
+                                            select.input-form.schedule-input(id="slotBreak-thu")
+                                                option(value="00:05") 5 mins                          
+                                                option(value="00:10") 10 mins                          
+                                                option(value="00:15") 15 mins                          
+                                                option(value="00:20") 20 mins                          
+                                                option(value="00:25") 25 mins                          
+                                                option(value="00:30") 30 mins                          
+                                                option(value="00:35") 35 mins                          
+                                                option(value="00:40") 40 mins                          
+                                                option(value="00:45") 45 mins                          
+                                                option(value="00:50") 50 mins                          
+                                                option(value="00:55") 55 mins                          
+                                                option(value="01:00") 60 mins                
+                            .signup--form-section.schedule-signup--form-sec.fri-sat--schedule.full_width.schedule-day--space.mobile_input--length
+                                div 
+                                    div
+                                        label.title-form(for="dayFlowDirection-fri") Friday 
+                                        select.input-form.schedule-input(id="dayFlowDirection-fri")
+                                            option(value="shop") Clients travel to you on this day!
+                                            -if(workFlowDirection == 'bidirectional')
+                                                option(value="home") You travel to clients on this day!
+                                            option(value="dayoff") Take Dayoff 
+                                    .select-work-times.schedule-item
+                                        div 
+                                            label.title-form.schedule-title-form(for="startTime-fri") Start
+                                            select.input-form.schedule-input(id="startTime-fri")
+                                                option(value="00:00") 00:00
+                                                option(value="01:00") 01:00
+                                                option(value="02:00") 02:00
+                                                option(value="03:00") 03:00
+                                                option(value="04:00") 04:00
+                                                option(value="05:00") 05:00
+                                                option(value="06:00") 06:00
+                                                option(value="07:00") 07:00
+                                                option(value="08:00") 08:00
+                                                option(value="09:00") 09:00
+                                                option(value="10:00") 10:00
+                                                option(value="11:00") 11:00
+                                                option(value="12:00") 12:00
+                                                option(value="13:00") 13:00
+                                                option(value="14:00") 14:00
+                                                option(value="15:00") 15:00
+                                                option(value="16:00") 16:00
+                                                option(value="17:00") 17:00
+                                                option(value="18:00") 18:00
+                                                option(value="19:00") 19:00
+                                                option(value="20:00") 20:00
+                                                option(value="21:00") 21:00
+                                                option(value="22:00") 22:00
+                                                option(value="23:00") 23:00
+                                        div 
+                                            label.title-form.schedule-title-form(for="endTime-fri") End 
+                                            select.input-form.schedule-input(id="endTime-fri") 
+                                                option(value="01:00") 01:00
+                                                option(value="02:00") 02:00
+                                                option(value="03:00") 03:00
+                                                option(value="04:00") 04:00
+                                                option(value="05:00") 05:00
+                                                option(value="06:00") 06:00
+                                                option(value="07:00") 07:00
+                                                option(value="08:00") 08:00
+                                                option(value="09:00") 09:00
+                                                option(value="10:00") 10:00
+                                                option(value="11:00") 11:00
+                                                option(value="12:00") 12:00
+                                                option(value="13:00") 13:00
+                                                option(value="14:00") 14:00
+                                                option(value="15:00") 15:00
+                                                option(value="16:00") 16:00
+                                                option(value="17:00") 17:00
+                                                option(value="18:00") 18:00
+                                                option(value="19:00") 19:00
+                                                option(value="20:00") 20:00
+                                                option(value="21:00") 21:00
+                                                option(value="22:00") 22:00
+                                                option(value="23:00") 23:00
+                                    .slot-timings.schedule-item
+                                        div 
+                                            label.title-form.schedule-title-form(for="slotLength-fri") Slots Length 
+                                            select.input-form.schedule-input(id="slotLength-fri")
+                                                option(value="00:15") 15 mins                               
+                                                option(value="00:30") 30 mins                               
+                                                option(value="00:45") 45 mins                               
+                                                option(value="01:00") 1 hour                               
+                                                option(value="01:15") 1hr 15mins                               
+                                                option(value="01:30") 1hr 30mins                               
+                                                option(value="01:45") 1hr 45mins                             
+                                                option(value="02:00") 2 hours       
+                                        div 
+                                            label.title-form.schedule-title-form(for="slotBreak-fri") Slots Break 
+                                            select.input-form.schedule-input(id="slotBreak-fri")
+                                                option(value="00:05") 5 mins                          
+                                                option(value="00:10") 10 mins                          
+                                                option(value="00:15") 15 mins                          
+                                                option(value="00:20") 20 mins                          
+                                                option(value="00:25") 25 mins                          
+                                                option(value="00:30") 30 mins                          
+                                                option(value="00:35") 35 mins                          
+                                                option(value="00:40") 40 mins                          
+                                                option(value="00:45") 45 mins                          
+                                                option(value="00:50") 50 mins                          
+                                                option(value="00:55") 55 mins                          
+                                                option(value="01:00") 60 mins  
+                                div                        
+                                    div
+                                        label.title-form(for="dayFlowDirection-sat") Saturday 
+                                        select.input-form.schedule-input(id="dayFlowDirection-sat")
+                                            option(value="shop") Clients travel to you on this day!
+                                            -if(workFlowDirection == 'bidirectional')
+                                                option(value="home") You travel to clients on this day!
+                                            option(value="dayoff") Take Dayoff 
+                                    .select-work-times.schedule-item
+                                        div 
+                                            label.title-form.schedule-title-form(for="startTime-sat") Start
+                                            select.input-form.schedule-input(id="startTime-sat")
+                                                option(value="00:00") 00:00
+                                                option(value="01:00") 01:00
+                                                option(value="02:00") 02:00
+                                                option(value="03:00") 03:00
+                                                option(value="04:00") 04:00
+                                                option(value="05:00") 05:00
+                                                option(value="06:00") 06:00
+                                                option(value="07:00") 07:00
+                                                option(value="08:00") 08:00
+                                                option(value="09:00") 09:00
+                                                option(value="10:00") 10:00
+                                                option(value="11:00") 11:00
+                                                option(value="12:00") 12:00
+                                                option(value="13:00") 13:00
+                                                option(value="14:00") 14:00
+                                                option(value="15:00") 15:00
+                                                option(value="16:00") 16:00
+                                                option(value="17:00") 17:00
+                                                option(value="18:00") 18:00
+                                                option(value="19:00") 19:00
+                                                option(value="20:00") 20:00
+                                                option(value="21:00") 21:00
+                                                option(value="22:00") 22:00
+                                                option(value="23:00") 23:00
+                                        div 
+                                            label.title-form.schedule-title-form(for="endTime-sat") End 
+                                            select.input-form.schedule-input(id="endTime-sat") 
+                                                option(value="01:00") 01:00
+                                                option(value="02:00") 02:00
+                                                option(value="03:00") 03:00
+                                                option(value="04:00") 04:00
+                                                option(value="05:00") 05:00
+                                                option(value="06:00") 06:00
+                                                option(value="07:00") 07:00
+                                                option(value="08:00") 08:00
+                                                option(value="09:00") 09:00
+                                                option(value="10:00") 10:00
+                                                option(value="11:00") 11:00
+                                                option(value="12:00") 12:00
+                                                option(value="13:00") 13:00
+                                                option(value="14:00") 14:00
+                                                option(value="15:00") 15:00
+                                                option(value="16:00") 16:00
+                                                option(value="17:00") 17:00
+                                                option(value="18:00") 18:00
+                                                option(value="19:00") 19:00
+                                                option(value="20:00") 20:00
+                                                option(value="21:00") 21:00
+                                                option(value="22:00") 22:00
+                                                option(value="23:00") 23:00
+                                    .slot-timings.schedule-item
+                                        div 
+                                            label.title-form.schedule-title-form(for="slotLength-sat") Slots Length 
+                                            select.input-form.schedule-input(id="slotLength-sat")
+                                                option(value="00:15") 15 mins                               
+                                                option(value="00:30") 30 mins                               
+                                                option(value="00:45") 45 mins                               
+                                                option(value="01:00") 1 hour                               
+                                                option(value="01:15") 1hr 15mins                               
+                                                option(value="01:30") 1hr 30mins                               
+                                                option(value="01:45") 1hr 45mins                             
+                                                option(value="02:00") 2 hours     
+                                        div 
+                                            label.title-form.schedule-title-form(for="slotBreak-sat") Slots Break 
+                                            select.input-form.schedule-input(id="slotBreak-sat")
+                                                option(value="00:05") 5 mins                          
+                                                option(value="00:10") 10 mins                          
+                                                option(value="00:15") 15 mins                          
+                                                option(value="00:20") 20 mins                          
+                                                option(value="00:25") 25 mins                          
+                                                option(value="00:30") 30 mins                          
+                                                option(value="00:35") 35 mins                          
+                                                option(value="00:40") 40 mins                          
+                                                option(value="00:45") 45 mins                          
+                                                option(value="00:50") 50 mins                          
+                                                option(value="00:55") 55 mins                          
+                                                option(value="01:00") 60 mins  
+
+                            .signup--form-section.schedule-signup--form-sec.sun--schedule.full_width.schedule-day--space.mobile_input--length
+                                div 
+                                    div
+                                        label.title-form(for="dayFlowDirection-sun") Sunday 
+                                        select.input-form.schedule-input(id="dayFlowDirection-sun")
+                                            option(value="shop") Clients travel to you on this day!
+                                            -if(workFlowDirection == 'bidirectional')
+                                                option(value="home") You travel to clients on this day!
+                                            option(value="dayoff") Take Dayoff 
+                                    .select-work-times.schedule-item
+                                        div 
+                                            label.title-form.schedule-title-form(for="startTime-sun") Start
+                                            select.input-form.schedule-input(id="startTime-sun")
+                                                option(value="00:00") 00:00
+                                                option(value="01:00") 01:00
+                                                option(value="02:00") 02:00
+                                                option(value="03:00") 03:00
+                                                option(value="04:00") 04:00
+                                                option(value="05:00") 05:00
+                                                option(value="06:00") 06:00
+                                                option(value="07:00") 07:00
+                                                option(value="08:00") 08:00
+                                                option(value="09:00") 09:00
+                                                option(value="10:00") 10:00
+                                                option(value="11:00") 11:00
+                                                option(value="12:00") 12:00
+                                                option(value="13:00") 13:00
+                                                option(value="14:00") 14:00
+                                                option(value="15:00") 15:00
+                                                option(value="16:00") 16:00
+                                                option(value="17:00") 17:00
+                                                option(value="18:00") 18:00
+                                                option(value="19:00") 19:00
+                                                option(value="20:00") 20:00
+                                                option(value="21:00") 21:00
+                                                option(value="22:00") 22:00
+                                                option(value="23:00") 23:00
+                                        div 
+                                            label.title-form.schedule-title-form(for="endTime-sun") End 
+                                            select.input-form.schedule-input(id="endTime-sun") 
+                                                option(value="01:00") 01:00
+                                                option(value="02:00") 02:00
+                                                option(value="03:00") 03:00
+                                                option(value="04:00") 04:00
+                                                option(value="05:00") 05:00
+                                                option(value="06:00") 06:00
+                                                option(value="07:00") 07:00
+                                                option(value="08:00") 08:00
+                                                option(value="09:00") 09:00
+                                                option(value="10:00") 10:00
+                                                option(value="11:00") 11:00
+                                                option(value="12:00") 12:00
+                                                option(value="13:00") 13:00
+                                                option(value="14:00") 14:00
+                                                option(value="15:00") 15:00
+                                                option(value="16:00") 16:00
+                                                option(value="17:00") 17:00
+                                                option(value="18:00") 18:00
+                                                option(value="19:00") 19:00
+                                                option(value="20:00") 20:00
+                                                option(value="21:00") 21:00
+                                                option(value="22:00") 22:00
+                                                option(value="23:00") 23:00
+                                    .slot-timings.schedule-item
+                                        div 
+                                            label.title-form.schedule-title-form(for="slotLength-sun") Slots Length 
+                                            select.input-form.schedule-input(id="slotLength-sun")
+                                                option(value="00:15") 15 mins                               
+                                                option(value="00:30") 30 mins                               
+                                                option(value="00:45") 45 mins                               
+                                                option(value="01:00") 1 hour                               
+                                                option(value="01:15") 1hr 15mins                               
+                                                option(value="01:30") 1hr 30mins                               
+                                                option(value="01:45") 1hr 45mins                             
+                                                option(value="02:00") 2 hours     
+                                        div 
+                                            label.title-form.schedule-title-form(for="slotBreak-sun") Slots Break 
+                                            select.input-form.schedule-input(id="slotBreak-sun")
+                                                option(value="00:05") 5 mins                          
+                                                option(value="00:10") 10 mins                          
+                                                option(value="00:15") 15 mins                          
+                                                option(value="00:20") 20 mins                          
+                                                option(value="00:25") 25 mins                          
+                                                option(value="00:30") 30 mins                          
+                                                option(value="00:35") 35 mins                          
+                                                option(value="00:40") 40 mins                          
+                                                option(value="00:45") 45 mins                          
+                                                option(value="00:50") 50 mins                          
+                                                option(value="00:55") 55 mins                          
+                                                option(value="01:00") 60 mins  
+                            .align-save-changes
+                                button.btn.button--blue.btn--update-profile.work-schedule--save.setting--btn Update Changes
+
+                                        script.
+                                            const workScheduleEl = document.querySelector('.workSchedule-data').dataset.workschedule;
+                                            //- console.log(JSON.parse(workScheduleEl))
+                                            const workSchedule = JSON.parse(workScheduleEl)
+                                    
+                                            function preSetDropdownVal(element, value) {
+                                                //- console.log(value)
+                                                for(i=0; i<element.options.length; i++) {
+                                                    if(element.options[i].value == value) {
+                                                        element.options[i].selected = true;
+                                                        break;
+                                                    }
+                                                }
+                                                return;
+                                            }
+                                            //- Monday
+                                            if(workSchedule.mon.work_type == 'dayoff') {
+                                                preSetDropdownVal(document.getElementById('dayFlowDirection-mon'), workSchedule.mon.work_type)
+                                            } else {
+                                                preSetDropdownVal(document.getElementById('dayFlowDirection-mon'), workSchedule.mon.work_type)
+                                                const searchVal = workSchedule.mon.work_hours.split('-')
+                                                preSetDropdownVal(document.getElementById('startTime-mon'), searchVal[0])
+                                                preSetDropdownVal(document.getElementById('endTime-mon'), searchVal[1])
+                                                preSetDropdownVal(document.getElementById('slotLength-mon'), workSchedule.mon.slot_length)
+                                                preSetDropdownVal(document.getElementById('slotBreak-mon'), workSchedule.mon.slot_gap)
+                                            }
+
+                                            //- Tuesday
+                                            if(workSchedule.tue.work_type == 'dayoff') {
+                                                preSetDropdownVal(document.getElementById('dayFlowDirection-tue'), workSchedule.tue.work_type)
+                                            } else {
+                                                preSetDropdownVal(document.getElementById('dayFlowDirection-tue'), workSchedule.tue.work_type)
+                                                const searchVal = workSchedule.tue.work_hours.split('-')
+                                                preSetDropdownVal(document.getElementById('startTime-tue'), searchVal[0])
+                                                preSetDropdownVal(document.getElementById('endTime-tue'), searchVal[1])
+                                                preSetDropdownVal(document.getElementById('slotLength-tue'), workSchedule.tue.slot_length)
+                                                preSetDropdownVal(document.getElementById('slotBreak-tue'), workSchedule.tue.slot_gap)
+                                            }
+
+                                            //- Wednesday
+                                            if(workSchedule.wed.work_type == 'dayoff') {
+                                                preSetDropdownVal(document.getElementById('dayFlowDirection-wed'), workSchedule.wed.work_type)
+                                            } else {
+                                                preSetDropdownVal(document.getElementById('dayFlowDirection-wed'), workSchedule.wed.work_type)
+                                                const searchVal = workSchedule.wed.work_hours.split('-')
+                                                preSetDropdownVal(document.getElementById('startTime-wed'), searchVal[0])
+                                                preSetDropdownVal(document.getElementById('endTime-wed'), searchVal[1])
+                                                preSetDropdownVal(document.getElementById('slotLength-wed'), workSchedule.wed.slot_length)
+                                                preSetDropdownVal(document.getElementById('slotBreak-wed'), workSchedule.wed.slot_gap)
+                                            }
+
+                                            //- Thursday
+                                            if(workSchedule.thu.work_type == 'dayoff') {
+                                                preSetDropdownVal(document.getElementById('dayFlowDirection-thu'), workSchedule.thu.work_type)
+                                            } else {
+                                                preSetDropdownVal(document.getElementById('dayFlowDirection-thu'), workSchedule.thu.work_type)
+                                                const searchVal = workSchedule.thu.work_hours.split('-')
+                                                preSetDropdownVal(document.getElementById('startTime-thu'), searchVal[0])
+                                                preSetDropdownVal(document.getElementById('endTime-thu'), searchVal[1])
+                                                preSetDropdownVal(document.getElementById('slotLength-thu'), workSchedule.thu.slot_length)
+                                                preSetDropdownVal(document.getElementById('slotBreak-thu'), workSchedule.thu.slot_gap)
+                                            }
+
+                                            //- Friday
+                                            if(workSchedule.fri.work_type == 'dayoff') {
+                                                preSetDropdownVal(document.getElementById('dayFlowDirection-fri'), workSchedule.fri.work_type)
+                                            } else {
+                                                preSetDropdownVal(document.getElementById('dayFlowDirection-fri'), workSchedule.fri.work_type)
+                                                const searchVal = workSchedule.fri.work_hours.split('-')
+                                                preSetDropdownVal(document.getElementById('startTime-fri'), searchVal[0])
+                                                preSetDropdownVal(document.getElementById('endTime-fri'), searchVal[1])
+                                                preSetDropdownVal(document.getElementById('slotLength-fri'), workSchedule.fri.slot_length)
+                                                preSetDropdownVal(document.getElementById('slotBreak-fri'), workSchedule.fri.slot_gap)
+                                            }
+
+                                            //- Saturday
+                                            if(workSchedule.sat.work_type == 'dayoff') {
+                                                preSetDropdownVal(document.getElementById('dayFlowDirection-sat'), workSchedule.sat.work_type)
+                                            } else {
+                                                preSetDropdownVal(document.getElementById('dayFlowDirection-sat'), workSchedule.sat.work_type)
+                                                const searchVal = workSchedule.sat.work_hours.split('-')
+                                                preSetDropdownVal(document.getElementById('startTime-sat'), searchVal[0])
+                                                preSetDropdownVal(document.getElementById('endTime-sat'), searchVal[1])
+                                                preSetDropdownVal(document.getElementById('slotLength-sat'), workSchedule.sat.slot_length)
+                                                preSetDropdownVal(document.getElementById('slotBreak-sat'), workSchedule.sat.slot_gap)
+                                            }
+
+                                            //- Sunday
+                                            if(workSchedule.sun.work_type == 'dayoff') {
+                                                preSetDropdownVal(document.getElementById('dayFlowDirection-sun'), workSchedule.sun.work_type)
+                                            } else {
+                                                preSetDropdownVal(document.getElementById('dayFlowDirection-sun'), workSchedule.sun.work_type)
+                                                const searchVal = workSchedule.sun.work_hours.split('-')
+                                                preSetDropdownVal(document.getElementById('startTime-sun'), searchVal[0])
+                                                preSetDropdownVal(document.getElementById('endTime-sun'), searchVal[1])
+                                                preSetDropdownVal(document.getElementById('slotLength-sun'), workSchedule.sun.slot_length)
+                                                preSetDropdownVal(document.getElementById('slotBreak-sun'), workSchedule.sun.slot_gap)
+                                            }
+
+                        //- .explain-scroll
+                        //-     p.title-form Scroll 
+                        //-     span.material-icons arrow_downward
+                        //-     span.material-icons unfold_more
+
+                        //- .form-section.form-btns.both--form-btns
+                        //-     a.button.button--md.button--blue.signup-back-2 Back
+                        //-     button.button.button--md.button--blue.next-2 Next

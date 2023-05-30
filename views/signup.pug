@@ -1,0 +1,77 @@
+extends home 
+
+block navHeader 
+    include _navHeader
+
+block mainPage 
+    main
+        .login-container
+            .login-account-container.signup-container
+                form.signup-form.form-0
+                    h2.login-secondary-heading.signup-heading Create Account
+                    .signup--form-section 
+                        label.title-form(for="firstName") First Name 
+                        input.input-form(type="text", id="firstName", placeholder="Please enter your first name", required)
+                    .signup--form-section.form-signup--space
+                        label.title-form(for="surname") Surname
+                        input.input-form(type="text", id="surname", placeholder="Please enter your surname", required)
+                    .signup--form-section.form-section--space
+                        label.title-form(for="middle-name") Middle Name (optional)
+                        input.input-form(type="text", id="middle-name", placeholder="Please enter your middle name (optional)")
+                    .form-section.form-btns
+                        button.button.button--md.button--blue.next-0 Next
+
+                form.signup-form.form-1
+                    h2.login-secondary-heading.signup-heading Create Account
+                    .signup--form-section
+                        label.title-form(for="email") Email Address 
+                        input.input-form(type="email", id="email", placeholder="Please enter your email", required)
+                    .signup--form-section.form-signup--space
+                        label.title-form(for="password") Password
+                        input.input-form(type="password", id="password", placeholder="•••••••••", pattern="(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,}", title="Password must contain at-least 8 characters, one number, one uppercase letter and a lowercase letter", required)
+                    .signup--form-section.form-section--space
+                        label.title-form(for="confirm-password") Confirm Password 
+                        input.input-form(type="password", id="confirm-password", placeholder="•••••••••", minlength="8", pattern="(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,}", title="Password must contain at-least 8 characters, one number, one uppercase letter and a lowercase letter", required)
+                    .form-section.form-btns.both--form-btns
+                        a.button.button--md.button--blue.signup-back-0 Back
+                        button.button.button--md.button--blue.next-1 Next
+
+                form.signup-form.form-2
+                    h2.login-secondary-heading.signup-heading Create Account
+                    .signup--form-section.address--street
+                        div
+                            label.title-form(for="street") Street Name
+                            input.input-form(type="text", id="street", placeholder="Harley street", required)
+                        div
+                            label.title-form(for="text") Door Number
+                            input.input-form(type="text", id="door-num", placeholder="65", required)
+                    .signup--form-section.form-section--space.address--town-postcode
+                        div 
+                            label.title-form(for="city") Town/City
+                            input.input-form(type="text", id="city", placeholder="London, Ilford", required)
+                        div 
+                            label.title-form(for="postcode") Postcode 
+                            input.input-form(type="text", id="postcode", placeholder="IG1 3J6", required)
+                    .signup--form-section.form-section--space.proximity--contact
+                        div 
+                            label.title-form.spec-location(for="proximity-dis") Default Proximity (miles)
+                            input.input-form(type="number", id="proximity-dis", min="0.1", step="any", placeholder="5", required)
+                        div 
+                            label.title-form(for="mobile-num") Mobile Number 
+                            input.input-form(type="text", id="mobile-num", placeholder="07808152451")
+                    .form-section.form-btns.both--form-btns
+                        a.button.button--md.button--blue.signup-back Back
+                        button.button.button--md.button--blue.signup-submit Submit
+
+                .signup-step--container
+                    .step-progress-bar
+                    .signup-step Step 1
+                    .signup-step Step 2
+                    .signup-step Step 3
+
+                //- .signup--form-section.form-section--space
+                //-     label.title-form(for="confirm-password") Confirm Password 
+                //-     input.input-form(type="text", id="confirm-password", placeholder="•••••••••", minlength="8", required)
+                //- .form-section.form-btns
+                //-     button.button.button--md.button--blue.next-1 Next
+            

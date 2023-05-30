@@ -1,0 +1,22 @@
+extends home 
+
+block navHeader 
+    include _navHeader
+
+block mainPage
+    main 
+        section.pass-reset-token--section
+            .container
+                h2.secondary-heading.confirmation-heading
+                    | A password reset token has been sent to your email
+                p.step-work-description.token-reset--description
+                    | A reset confirmation email token has been sent to this email:
+                    br
+                    span.span-email=`< ${email} >`
+                    br
+                p.token-reset--description2
+                    | Please click on the link sent to your email address, it is a token that grants permission to reset your password
+                p.token-reset--description2.token-valid-time (Valid for 10 mins only)
+                .reset-confirmation--btns
+                    a.btn.btn--cta.margin-right-sm.go-back--btn(href='#') Go Back
+                    a.btn.btn--learn-more.resend-token--email(href='#') Resend Token
