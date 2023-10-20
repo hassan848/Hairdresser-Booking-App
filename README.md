@@ -6,3 +6,5 @@ Functioning App Demonstration:
 Tech Stack used: 
   Frontend: Vanilla JavaScript, HTML/PUG, CSS
   Backend: NodeJS, ExpressJS, MongoDB with Mongoose
+
+Video Demonstration: https://drive.google.com/file/d/1zV97mqwbsQjGbxkwzxoLKSqWoL1V-Yqx/view?usp=sharing
